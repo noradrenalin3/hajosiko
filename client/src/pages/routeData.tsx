@@ -1,12 +1,33 @@
 import { RouteObject } from 'react-router-dom';
 import Home from '~/pages/Home';
 import Cars from '~/pages/Cars';
-import Car from '~/pages/Car';
-import Maintenance from '~/pages/Maintenance';
-import Reminders from '~/pages/Reminders';
+import Overview from '~/pages/Car/Overview';
+import Maintenance from '~/pages/Car/Maintenance';
+import Reminders from '~/pages/Car/Reminders';
 import Settings from '~/pages/Settings';
 import SignUp from '~/pages/SignUp';
 import SignIn from '~/pages/SignIn';
+
+const carRoutes: RouteObject[] = [
+	{
+		path: 'cars/:carId',
+		children: [
+			{
+				index: true,
+				path: '',
+				element: <Overview />,
+			},
+			{
+				path: 'maintenance',
+				element: <Maintenance />,
+			},
+			{
+				path: 'reminders',
+				element: <Reminders />,
+			},
+		],
+	},
+];
 
 const routes: RouteObject[] = [
 	{
@@ -17,7 +38,8 @@ const routes: RouteObject[] = [
 		path: 'cars',
 		element: <Cars />,
 	},
-	{
+	...carRoutes,
+	/*{
 		path: 'cars/:carId',
 		element: <Car />,
 	},
@@ -28,7 +50,7 @@ const routes: RouteObject[] = [
 	{
 		path: 'cars/:carId/reminders',
 		element: <Reminders />,
-	},
+	},*/
 	{
 		path: 'settings',
 		element: <Settings />,

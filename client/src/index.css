@@ -4,12 +4,12 @@
 
 @layer base {
 	.light {
-		@apply bg-bw-50;
-		@apply text-bw-950;
+		@apply bg-cinder-100;
+		@apply text-cinder-900;
 	}
 	.dark {
-		@apply bg-bw-950;
-		@apply text-bw-50;
+		@apply bg-cinder-1000;
+		@apply text-cinder-50;
 	}
 }
 
@@ -37,4 +37,8 @@ html {
 }
 body {
 	min-height: 100%;
+}
+input:focus-visible {
+	outline: 2px solid #3b82f6;
+	outline-offset: -2px;
 }

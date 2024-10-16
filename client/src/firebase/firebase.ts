@@ -5,6 +5,7 @@ import {
 	onAuthStateChanged,
 	signOut,
 	signInWithEmailAndPassword,
+	createUserWithEmailAndPassword,
 	UserCredential,
 	User,
 	NextOrObserver,
@@ -20,6 +21,11 @@ export const signInUser = async (
 ): Promise<UserCredential | undefined> => {
 	if (!email || !password) return;
 	return await signInWithEmailAndPassword(auth, email, password);
+};
+
+export const signUpUser = async (email: string, password: string) => {
+	if (!email || !password) return;
+	return await createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const userStateListener = (callback: NextOrObserver<User>) => {

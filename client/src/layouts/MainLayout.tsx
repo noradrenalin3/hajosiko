@@ -1,17 +1,29 @@
-import { ReactNode } from 'react';
-//import Navbar from '~/components/Navbar';
-//import Sidebar from '~/components/Sidebar';
+import { useState, useEffect, ReactNode } from 'react';
+import { MainNav } from '~/components/Nav/Mobile';
 
-const MainLayout = ({ children }: {children: ReactNode}) => {
+const MainLayout = ({ children }: { children: ReactNode }) => {
+	const mobileMediaQuery = '(max-width: 639px)';
+	const [isMobile, setIsMobile] = useState(
+		window.matchMedia(mobileMediaQuery).matches,
+	);
+	useEffect(() => {
+		const query = window.matchMedia(mobileMediaQuery);
+		const handleQueryChange = (queryEvent: MediaQueryListEvent) => {
+			setIsMobile(queryEvent.matches);
+		};
+
+		query.addEventListener('change', handleQueryChange);
+
+		return () => {
+			query.removeEventListener('change', handleQueryChange);
+		};
+	}, []);
+
 	return (
-		<div className='flex flex-1 basis-full min-h-screen'>
-			<div className='flex-1 basis-full flex flex-col'>
-				<div className='flex flex-col gap-4 p-8 border-t border-bw-100 dark:border-bw-925'>
-					{children}
-				</div>
-			</div>
+		<div className={'min-h-screen flex flex-col'}>
+			<div className='flex flex-col gap-4 p-4 sm:p-8 grow'>{children}</div>
+			<MainNav />
 		</div>
 	);
 };
 export default MainLayout;
-
