@@ -4,6 +4,10 @@ import { Database } from '#db/db.types.js';
 
 const { Pool } = pg;
 
+pg.types.setTypeParser(1082, (stringValue) => {
+	return stringValue;
+});
+
 const dialect = new PostgresDialect({
 	pool: new Pool({
 		user: 'postgres',

@@ -30,8 +30,8 @@ export interface ServiceRecords {
 	car_id: ColumnType<number, number, never>;
 	id: Generated<number>;
 	description: string;
-	notes: string;
-	date: ColumnType<string, string, string>;
+	notes?: string;
+	date: ColumnType<Date, string, string>;
 	kilometers: number;
 	cost: number;
 }
