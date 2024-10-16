@@ -14,9 +14,22 @@ export const ThemeContext = createContext<ContextType>({
 	toggle: () => {},
 });
 
+const getStorage = () => {
+	const setting = localStorage.getItem('prefersDark');
+	if (setting === undefined || setting === null) {
+		return undefined;
+	} else {
+		return JSON.parse(setting);
+	}
+};
+const setStorage = (isDark: boolean) => {
+	localStorage.setItem('prefersDark', JSON.stringify(isDark));
+};
+
 export const ThemeProvider = ({ children }: ContextProviderProps) => {
 	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-	const [dark, setDark] = useState(prefersDark);
+	const initial = getStorage() !== undefined ? getStorage() : prefersDark;
+	const [dark, setDark] = useState(initial);
 
 	useLayoutEffect(() => {
 		applyTheme();
@@ -25,18 +38,24 @@ export const ThemeProvider = ({ children }: ContextProviderProps) => {
 	const applyTheme = () => {
 		const body = document.getElementsByTagName('body')[0];
 		if (dark) {
-			body.classList.add('dark-theme');
-			body.classList.remove('light-theme');
+			body.classList.add('dark');
+			body.classList.remove('light');
 		} else {
-			body.classList.add('light-theme');
-			body.classList.remove('dark-theme');
+			body.classList.add('light');
+			body.classList.remove('dark');
 		}
 	};
 	const toggle = () => {
 		const body = document.getElementsByTagName('body')[0];
 		body.style.cssText = 'transition: background .25s ease';
 
-		setDark(!dark);
+		if (dark) {
+			setDark(false);
+			setStorage(false);
+		} else {
+			setDark(true);
+			setStorage(true);
+		}
 	};
 
 	return (
