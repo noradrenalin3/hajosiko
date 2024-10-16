@@ -86,12 +86,17 @@ const SignUp = () => {
 			</Toolbar>
 			<div className='p-4 rounded-lg'>
 				<Form onSubmit={handleSignUp} fields={fields} title='Sign up'>
-					<button type='submit' className='grow bg-custom-purple-light font-medium rounded-lg py-2 px-4'>
+					<button
+						type='submit'
+						className='grow bg-custom-purple-light font-medium rounded-lg py-2'
+					>
 						Sign up
 					</button>
-					<span className='flex justify-center gap-2 font-medium'>
+					<span className='flex justify-center gap-2 font-medium mt-2'>
 						<p>Already have an account?</p>
-						<Link to='/signin' className='text-blue-500'>Login now</Link>
+						<Link to='/signin' className='text-blue-500'>
+							Login now
+						</Link>
 					</span>
 				</Form>
 			</div>
