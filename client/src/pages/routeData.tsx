@@ -39,18 +39,6 @@ const routes: RouteObject[] = [
 		element: <Cars />,
 	},
 	...carRoutes,
-	/*{
-		path: 'cars/:carId',
-		element: <Car />,
-	},
-	{
-		path: 'cars/:carId/maintenance',
-		element: <Maintenance />,
-	},
-	{
-		path: 'cars/:carId/reminders',
-		element: <Reminders />,
-	},*/
 	{
 		path: 'settings',
 		element: <Settings />,
