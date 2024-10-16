@@ -4,6 +4,8 @@ import carRouter from '#routes/car.router.js';
 import userRouter from '#routes/user.router.js';
 import serviceRouter from '#routes/service.router.js';
 import verifyToken from '#middleware/verifyToken.js';
+import { notFound } from '#middleware/notFound.js';
+import { errorHandler } from '#middleware/errorHandler.js';
 import createTables from '#db/db.init.js';
 
 declare global {
@@ -25,6 +27,9 @@ app.use(cors());
 app.use('/api/cars', verifyToken, carRouter);
 app.use('/api/users', verifyToken, userRouter);
 app.use('/api/records', verifyToken, serviceRouter);
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
 	//createTables();
