@@ -3,6 +3,9 @@ export default {
 	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
+			gridTemplateColumns: {
+				centered: '0.5fr 2fr 0.5fr',
+			},
 			boxShadow: {
 				main: 'rgba(0, 0, 0, 0.2) 0px 0px 5px 1px',
 				//custom: 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px',
