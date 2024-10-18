@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCar } from '~/hooks/useCars';
+import { useCarById } from '~/hooks/useCars';
 import MainLayout from '~/layouts/MainLayout';
 import formatKm from '~/utils/formatKm';
 import { IoPencil as PencilIcon } from 'react-icons/io5';
@@ -22,8 +22,7 @@ const Overview = () => {
 	const navigate = useNavigate();
 
 	const { carId } = useParams();
-	const { data: car, isLoading, error } = useCar();
-	const serviceCount = 0;
+	const { data: car, isLoading, error } = useCarById(carId);
 
 	if (error) {
 		return <div>{error?.message || 'error'}</div>;
@@ -45,6 +44,9 @@ const Overview = () => {
 			</Toolbar>
 
 			<TabBar />
+			{error ? <div>Error</div> : null}
+			{isLoading ? <div>Loading...</div> : null}
+			{!car ? <div>No cars. Create one here</div> : null}
 			<Details car={car} />
 		</MainLayout>
 	);

@@ -3,9 +3,11 @@ import TabBar from '~/pages/Car/TabBar';
 import BackButton from '~/components/Button/BackButton';
 import AddButton from '~/components/Button/AddButton';
 import Toolbar, { Title } from '~/components/Toolbar';
-import { useCar } from '~/hooks/useCars';
+import { useCarById } from '~/hooks/useCars';
 import { useState } from 'react';
 import Switch from '~/components/Button/Switch';
+import { useParams } from 'react-router-dom';
+import invariant from '~/utils/invariant';
 
 type ReminderData = {
 	id: number;
@@ -46,16 +48,18 @@ const Reminder = ({ data }: { data: ReminderData }) => {
 						every {data.interval} months
 					</p>
 				</div>
-				<button className='ml-auto p-3'>
+				<div className='ml-auto p-3'>
 					<Switch checked={enabled} onChange={setEnabled} />
-				</button>
+				</div>
 			</div>
 		</div>
 	);
 };
 
 const Reminders = () => {
-	const { data: car, isLoading: carIsLoading, isError } = useCar();
+	const { carId } = useParams();
+	invariant(carId);
+	const { data: car, isLoading: carIsLoading, isError } = useCarById(carId);
 
 	if (carIsLoading) {
 		return <div>Loading...</div>;

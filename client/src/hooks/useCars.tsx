@@ -1,26 +1,34 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCars, getCar } from '~/api/queries';
 import { useContext } from 'react';
 import { AuthContext } from '~/context/AuthContext';
-import { useParams } from 'react-router-dom';
 
 export const useCars = () => {
 	const { currentUser } = useContext(AuthContext);
-	return useQuery({
+
+	const carsQuery = useQuery({
 		queryKey: ['cars'],
 		enabled: currentUser !== null,
 		queryFn: async () => (currentUser ? getCars(currentUser) : null),
 	});
+
+	const queryClient = useQueryClient();
+
+	carsQuery.data?.forEach((car) => {
+		queryClient.setQueryData(['car', car.id.toString()], car);
+	});
+
+	return carsQuery;
 };
 
-export const useCar = () => {
+export const useCarById = (id: string) => {
 	const { currentUser } = useContext(AuthContext);
-	const { carId } = useParams();
 
-	return useQuery({
-		queryKey: ['car'],
+	const carQuery = useQuery({
+		queryKey: ['car', id],
 		enabled: currentUser !== null,
-		queryFn: async () =>
-			currentUser && carId ? getCar(currentUser, carId) : null,
+		queryFn: async () => (currentUser ? getCar(currentUser, id) : null),
 	});
+
+	return carQuery;
 };
