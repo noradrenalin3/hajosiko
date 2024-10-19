@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import truncate from '~/utils/truncate';
 
 export const Title = ({ text }: { text: string }) => (
-	<h1 className='text-cinder-975 dark:text-cinder-100 text-center text-lg font-semibold'>
+	<h1 className='text-cinder-975 dark:text-cinder-100 text-center text-lg font-semibold py-1.5'>
 		{truncate(text)}
 	</h1>
 );

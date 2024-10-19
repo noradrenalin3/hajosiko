@@ -1,5 +1,5 @@
 import { FormDefs } from '~/types/form.types';
-import Form from '~/components/Form';
+import Form, { FormButtons } from '~/components/Form';
 import { NewServiceRecord } from '~/types/record.types';
 
 const AddRecordForm = ({
@@ -54,19 +54,7 @@ const AddRecordForm = ({
 
 	return (
 		<Form title='New Record' onSubmit={submit} fields={fields}>
-			<button
-				type='submit'
-				className='grow bg-blu-500 text-cinder-100 font-medium p-2 rounded-md'
-			>
-				Add car
-			</button>
-			<button
-				onClick={onCancel}
-				className='grow bg-rose-500 text-cinder-100 font-medium p-2 rounded-md'
-			>
-				{' '}
-				Cancel{' '}
-			</button>
+			<FormButtons cancelHandler={onCancel} submitLabel='Add record' />
 		</Form>
 	);
 };

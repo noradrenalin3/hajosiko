@@ -1,6 +1,7 @@
-import { Car, NewCar } from '~/types/car.types';
+import { Car, CarUpdate, NewCar } from '~/types/car.types';
 import { ServiceRecord, NewServiceRecord } from '~/types/record.types';
 import { User } from 'firebase/auth';
+import sortRecords from '~/api/sortRecords';
 
 const baseUrl = 'http://localhost:3000/api';
 
@@ -20,7 +21,7 @@ export async function getCars(user: User): Promise<Car[]> {
 	return cars;
 }
 
-export async function getCar(user: User, carId: string): Promise<Car> {
+export async function getCar(user: User, carId: number): Promise<Car> {
 	const token = await user.getIdToken();
 	const response = await fetch(baseUrl + '/cars/' + carId, {
 		method: 'GET',
@@ -54,21 +55,47 @@ export async function createCar(user: User, newCar: NewCar): Promise<Car> {
 	return car;
 }
 
+export async function updateCar(
+	user: User,
+	id: number,
+	car: CarUpdate,
+): Promise<Car> {
+	const token = await user.getIdToken();
+
+	const response = await fetch(`${baseUrl}/cars/${id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify(car),
+	});
+	if (!response.ok) {
+		throw new Error('Error adding car');
+	}
+	const result: Car = await response.json();
+	return result;
+}
+
 export async function getServiceRecords(
 	user: User,
-	carId?: string,
+	carId?: number,
 ): Promise<ServiceRecord[]> {
 	const token = await user.getIdToken();
 	console.log(token);
 
-	const params = new URLSearchParams({
-		car: carId || '',
-	}).toString();
+	const getUrl = () => {
+		if (carId) {
+			const params = new URLSearchParams({
+				car: carId.toString(),
+			}).toString();
+			return `${baseUrl}/records?${params}`;
+		} else {
+			return `${baseUrl}/records`;
+		}
+	};
 
-	const url = carId ? `${baseUrl}/records?${params}` : `${baseUrl}/records`;
-	console.log(url);
-
-	const response = await fetch(url, {
+	const response = await fetch(getUrl(), {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -80,8 +107,15 @@ export async function getServiceRecords(
 		throw new Error('Error fetching ');
 	}
 	const records: ServiceRecord[] = await response.json();
-	console.log(records);
-	return records;
+	if (!carId) {
+		console.log('all records:', records);
+	} else {
+		console.log('car-' + carId, 'records:', records);
+	}
+	if (records.length < 2) {
+		return records;
+	}
+	return sortRecords(records);
 }
 
 export async function createServiceRecord(

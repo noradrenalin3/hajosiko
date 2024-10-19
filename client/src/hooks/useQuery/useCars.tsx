@@ -2,8 +2,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCars, getCar } from '~/api/queries';
 import { useContext } from 'react';
 import { AuthContext } from '~/context/AuthContext';
+import queryKeys from '~/constants/queryKeys';
 
-export const useCars = () => {
+const useCars = () => {
 	const { currentUser } = useContext(AuthContext);
 
 	const carsQuery = useQuery({
@@ -15,20 +16,9 @@ export const useCars = () => {
 	const queryClient = useQueryClient();
 
 	carsQuery.data?.forEach((car) => {
-		queryClient.setQueryData(['car', car.id.toString()], car);
+		queryClient.setQueryData(['car', car.id], car);
 	});
 
 	return carsQuery;
 };
-
-export const useCarById = (id: string) => {
-	const { currentUser } = useContext(AuthContext);
-
-	const carQuery = useQuery({
-		queryKey: ['car', id],
-		enabled: currentUser !== null,
-		queryFn: async () => (currentUser ? getCar(currentUser, id) : null),
-	});
-
-	return carQuery;
-};
+export default useCars;

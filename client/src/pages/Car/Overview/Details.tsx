@@ -1,5 +1,4 @@
 import { Car } from '~/types/car.types';
-import { IoPencil as PencilIcon } from 'react-icons/io5';
 import formatKm from '~/utils/formatKm';
 
 const Section = ({ children }: { children: React.ReactNode }) => {
@@ -15,14 +14,9 @@ const Details = ({ car }: { car: Car }) => {
 	return (
 		<Section>
 			<div className='flex flex-col bg-cinder-50 dark:bg-cinder-975 rounded-lg p-4'>
-				<span className='flex justify-between items-center'>
-					<h1 className='text-xl font-medium text-cinder-950 dark:text-cinder-50'>
-						{car.make} {car.model}
-					</h1>
-					<button className='text-xl text-cinder-200 hover:bg-cinder-900 p-1 rounded-lg'>
-						<PencilIcon className='' />
-					</button>
-				</span>
+				<h1 className='text-xl font-medium text-cinder-950 dark:text-cinder-50'>
+					{car.make} {car.model}
+				</h1>
 				<span className='font-medium text-cinder-300'>{car.year}</span>
 				<span className='font-medium text-cinder-300'>
 					{formatKm(car.kilometers)} km

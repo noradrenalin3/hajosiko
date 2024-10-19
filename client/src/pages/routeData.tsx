@@ -7,6 +7,7 @@ import Reminders from '~/pages/Car/Reminders';
 import Settings from '~/pages/Settings';
 import SignUp from '~/pages/SignUp';
 import SignIn from '~/pages/SignIn';
+import NoMatch from '~/pages/Home';
 
 const carRoutes: RouteObject[] = [
 	{
@@ -44,6 +45,10 @@ const routes: RouteObject[] = [
 		element: <Settings />,
 	},
 	{
+		path: 'service',
+		element: <Maintenance />,
+	},
+	{
 		path: 'reminders',
 		element: <Reminders />,
 	},
@@ -54,6 +59,10 @@ const routes: RouteObject[] = [
 	{
 		path: 'signin',
 		element: <SignIn />,
+	},
+	{
+		path: '*',
+		element: <NoMatch />,
 	},
 ];
 

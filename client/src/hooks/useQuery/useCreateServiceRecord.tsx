@@ -4,10 +4,11 @@ import { useContext } from 'react';
 import { AuthContext } from '~/context/AuthContext';
 import { NewServiceRecord } from '~/types/record.types';
 
-export const useCreateServiceRecord = () => {
+const useCreateServiceRecord = () => {
 	const { currentUser } = useContext(AuthContext);
 	return useMutation({
 		mutationFn: async (newRecord: NewServiceRecord) =>
 			currentUser ? createServiceRecord(currentUser, newRecord) : null,
 	});
 };
+export default useCreateServiceRecord;
