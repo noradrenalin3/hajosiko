@@ -1,34 +1,14 @@
-import { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router-dom';
 import Home from '~/pages/Home';
 import Cars from '~/pages/Cars';
 import Overview from '~/pages/Car/Overview';
-import Maintenance from '~/pages/Car/Maintenance';
-import Reminders from '~/pages/Car/Reminders';
+import Maintenance from '~/pages/Maintenance';
+import RecordDetails from '~/pages/Maintenance/RecordDetails';
+import Reminders from '~/pages/Reminders';
 import Settings from '~/pages/Settings';
 import SignUp from '~/pages/SignUp';
 import SignIn from '~/pages/SignIn';
 import NoMatch from '~/pages/Home';
-
-const carRoutes: RouteObject[] = [
-	{
-		path: 'cars/:carId',
-		children: [
-			{
-				index: true,
-				path: '',
-				element: <Overview />,
-			},
-			{
-				path: 'maintenance',
-				element: <Maintenance />,
-			},
-			{
-				path: 'reminders',
-				element: <Reminders />,
-			},
-		],
-	},
-];
 
 const routes: RouteObject[] = [
 	{
@@ -39,7 +19,10 @@ const routes: RouteObject[] = [
 		path: 'cars',
 		element: <Cars />,
 	},
-	...carRoutes,
+	{
+		path: 'cars/:carId',
+		element: <Overview />,
+	},
 	{
 		path: 'settings',
 		element: <Settings />,
@@ -47,6 +30,10 @@ const routes: RouteObject[] = [
 	{
 		path: 'service',
 		element: <Maintenance />,
+	},
+	{
+		path: 'service/:recordId',
+		element: <RecordDetails />,
 	},
 	{
 		path: 'reminders',
