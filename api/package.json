@@ -4,7 +4,7 @@
 	},
 	"type": "module",
 	"scripts": {
-		"dev": "node --env-file=.env ./dist/index.js",
+		"dev": "tsc && node --env-file=.env ./dist/index.js",
 		"format": "npx prettier --write ."
 	},
 	"devDependencies": {
@@ -20,6 +20,7 @@
 		"firebase": "^10.13.2",
 		"firebase-admin": "^12.5.0",
 		"kysely": "^0.27.4",
-		"pg": "^8.13.0"
+		"pg": "^8.13.0",
+		"zod": "^3.23.8"
 	}
 }

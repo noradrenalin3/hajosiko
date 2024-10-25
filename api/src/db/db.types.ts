@@ -18,7 +18,7 @@ export interface Users {
 }
 
 export interface Cars {
-	owner_id: string;
+	owner_id: ColumnType<string, string, never>;
 	id: Generated<number>;
 	make: string;
 	model: string;
