@@ -1,21 +1,33 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { NewCar, CarUpdate } from '#db/db.types.js';
 import * as db from '#repositories/car.repository.js';
 
-export const getCars = async (req: Request, res: Response) => {
+export const getCars = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	const uid = req.uid;
-	const result = await db.getCars(uid);
+	const result = await db.getCars(uid).catch(next);
 	res.status(200).json(result);
 };
 
-export const getCarById = async (req: Request, res: Response) => {
+export const getCarById = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	const uid = req.uid;
 	const carId = Number(req.params.id);
-	const result = await db.getCarById(uid, carId);
+	const result = await db.getCarById(uid, carId).catch(next);
 	res.status(200).json(result);
 };
 
-export const createCar = async (req: Request, res: Response) => {
+export const createCar = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	const uid = req.uid;
 	const { make, model, year, kilometers } = req.body;
 	const newCar: NewCar = {
@@ -25,11 +37,15 @@ export const createCar = async (req: Request, res: Response) => {
 		year: year,
 		kilometers: kilometers,
 	};
-	const result = await db.createCar(newCar);
+	const result = await db.createCar(newCar).catch(next);
 	res.status(200).json(result);
 };
 
-export const updateCar = async (req: Request, res: Response) => {
+export const updateCar = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	const uid = req.uid;
 	const { make, model, year, kilometers } = req.body;
 	const carId = Number(req.params.id);
@@ -39,6 +55,18 @@ export const updateCar = async (req: Request, res: Response) => {
 		year: year,
 		kilometers: kilometers,
 	};
-	const result = await db.updateCar(uid, carId, updatedCar);
+	const result = await db.updateCar(uid, carId, updatedCar).catch(next);
 	res.status(200).json(result);
+};
+
+export const deleteCar = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	const uid = req.uid;
+	const carId = Number(req.params.id);
+	const result = await db.deleteCar(uid, carId);
+
+	res.status(200).json(Number(result.numDeletedRows));
 };
