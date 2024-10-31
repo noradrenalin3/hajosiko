@@ -4,6 +4,7 @@ import {
 	ServiceRecordUpdate,
 	NewServiceRecord,
 } from '#db/db.types.js';
+import { RecordWithCar } from '#types/record.types';
 
 export async function getRecords(uid: string): Promise<ServiceRecord[]> {
 	return await db
@@ -15,12 +16,14 @@ export async function getRecords(uid: string): Promise<ServiceRecord[]> {
 }
 
 export async function getRecordsByCar(uid: string, carId: number) {
+	const direction = 'desc';
 	return await db
 		.selectFrom('service_records')
 		.selectAll('service_records')
 		.innerJoin('cars', 'cars.id', 'service_records.car_id')
 		.where('cars.owner_id', '=', uid)
 		.where('cars.id', '=', carId)
+		.orderBy('service_records.date', direction)
 		.execute();
 }
 

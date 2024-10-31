@@ -11,6 +11,7 @@ export function errorHandler(
 	res: Response,
 	next: NextFunction,
 ) {
+	console.log('errorHandler', err);
 	try {
 		const msg = JSON.parse(err.message);
 		res.status(err.status).json({ msg });

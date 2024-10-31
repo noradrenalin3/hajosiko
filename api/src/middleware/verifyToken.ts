@@ -17,7 +17,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
 			req.uid = decoded.uid;
 			req.email = decoded.email;
-			console.log('Decoded user', req.email);
+			console.log('Request from user', req.email);
 			next();
 		})
 		.catch((error) => {

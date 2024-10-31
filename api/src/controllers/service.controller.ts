@@ -1,8 +1,16 @@
-import { Request, Response } from 'express';
-import { NewServiceRecord, ServiceRecordUpdate } from '#db/db.types.js';
+import { Request, Response, NextFunction } from 'express';
+import {
+	NewServiceRecord,
+	ServiceRecord,
+	ServiceRecordUpdate,
+} from '#db/db.types.js';
 import * as db from '#repositories/service.repository.js';
 
-export const getRecords = async (req: Request, res: Response) => {
+export const getRecords = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	const uid = req.uid;
 
 	if (req.query.car) {
