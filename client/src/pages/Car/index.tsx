@@ -23,7 +23,7 @@ const CarPage = () => {
 		if (url) {
 			setImgSrc(url);
 		} else {
-			setImgSrc('/car.jpg');
+			setImgSrc('/images/car.jpg');
 		}
 	});
 
