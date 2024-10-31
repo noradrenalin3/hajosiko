@@ -11,9 +11,15 @@ import {
 	NextOrObserver,
 } from 'firebase/auth';
 
+//import { getDatabase } from 'firebase/database';
+import { getStorage } from 'firebase/storage';
+
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+
+//export const db = getDatabase(app);
+export const storage = getStorage();
 
 export const signInUser = async (
 	email: string,

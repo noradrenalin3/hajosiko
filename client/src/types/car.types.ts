@@ -9,6 +9,12 @@ export type Car = {
 	service_costs: number;
 };
 
-export type NewCar = Omit<Car, 'owner_id' | 'id' | 'record_count' | 'service_costs'>;
+export type NewCar = Omit<
+	Car,
+	'owner_id' | 'id' | 'record_count' | 'service_costs'
+>;
 
-export type CarUpdate = Omit<Car, 'owner_id' | 'id' | 'record_count' | 'service_costs'>;
+export type CarUpdate = Omit<
+	Car,
+	'owner_id' | 'id' | 'record_count' | 'service_costs'
+>;

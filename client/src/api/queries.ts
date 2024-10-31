@@ -1,7 +1,6 @@
 import { Car, CarUpdate, NewCar } from '~/types/car.types';
 import { ServiceRecord, NewServiceRecord } from '~/types/record.types';
 import { User } from 'firebase/auth';
-import sortRecords from '~/api/sortRecords';
 
 const baseUrl = 'http://localhost:3000/api';
 
@@ -18,6 +17,7 @@ export async function getCars(user: User): Promise<Car[]> {
 		throw new Error('Error fetching cars');
 	}
 	const cars: Car[] = await response.json();
+	console.log(cars);
 	return cars;
 }
 
@@ -76,6 +76,22 @@ export async function updateCar(
 	const result: Car = await response.json();
 	return result;
 }
+export async function deleteCar(user: User, id: number): Promise<Car> {
+	const token = await user.getIdToken();
+
+	const response = await fetch(`${baseUrl}/cars/${id}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+	});
+	if (!response.ok) {
+		throw new Error('Error deleting car');
+	}
+	const result: Car = await response.json();
+	return result;
+}
 
 export async function getServiceRecords(
 	user: User,
@@ -115,7 +131,29 @@ export async function getServiceRecords(
 	if (records.length < 2) {
 		return records;
 	}
-	return sortRecords(records);
+	return records;
+}
+
+export async function getRecord(
+	user: User,
+	id: number,
+): Promise<ServiceRecord> {
+	const token = await user.getIdToken();
+	console.log(token);
+
+	const response = await fetch(`${baseUrl}/records/${id}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+	});
+
+	if (!response.ok) {
+		throw new Error('Error fetching ');
+	}
+	const record: ServiceRecord = await response.json();
+	return record;
 }
 
 export async function createServiceRecord(
