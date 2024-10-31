@@ -11,7 +11,7 @@ async function createTables() {
 		.createTable('cars')
 		.ifNotExists()
 		.addColumn('owner_id', 'varchar(48)', (cb) =>
-			cb.notNull().references('users.id'),
+			cb.notNull().references('users.id').onDelete('cascade'),
 		)
 		.addColumn('id', 'integer', (cb) =>
 			cb.primaryKey().generatedAlwaysAsIdentity(),
@@ -24,7 +24,9 @@ async function createTables() {
 	await db.schema
 		.createTable('service_records')
 		.ifNotExists()
-		.addColumn('car_id', 'integer', (cb) => cb.notNull().references('cars.id'))
+		.addColumn('car_id', 'integer', (cb) =>
+			cb.notNull().references('cars.id').onDelete('cascade'),
+		)
 		.addColumn('id', 'integer', (cb) =>
 			cb.primaryKey().generatedAlwaysAsIdentity(),
 		)

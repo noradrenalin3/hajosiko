@@ -6,6 +6,7 @@ const serviceAccount = require('../../local/serviceAccountKey.json');
 
 const firebase = admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
+	storageBucket: 'hajosiko.appspot.com',
 });
 
 export default firebase;

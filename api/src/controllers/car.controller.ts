@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { NewCar, CarUpdate } from '#db/db.types.js';
 import * as db from '#repositories/car.repository.js';
+import { deleteImage } from '#controllers/image.controller.js';
 
 export const getCars = async (
 	req: Request,
@@ -67,6 +68,11 @@ export const deleteCar = async (
 	const uid = req.uid;
 	const carId = Number(req.params.id);
 	const result = await db.deleteCar(uid, carId);
+	const rows = Number(result.numDeletedRows);
+	if (rows < 1) {
+		return res.status(404).json(rows);
+	}
 
-	res.status(200).json(Number(result.numDeletedRows));
+	await deleteImage(uid, carId).catch(next);
+	res.status(200).json(rows);
 };
