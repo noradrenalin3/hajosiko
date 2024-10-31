@@ -1,20 +1,16 @@
-import { User } from 'firebase/auth';
-import { useContext, ReactNode, useState, useEffect } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '~/context/AuthContext';
 import {
 	PiCaretRightBold as RightIcon,
-	PiListBold as MenuIcon,
-	PiCircleFill as CircleIcon,
 	PiUser as PersonIcon,
 	PiSignOut as LogOutIcon,
 	PiMoon as MoonIcon,
+	PiGlobeHemisphereWestFill as GlobeIcon,
 } from 'react-icons/pi';
 
 import { Switch } from '@headlessui/react';
 import { ThemeContext } from '~/context/ThemeContext';
-import MainLayout from '~/layouts/MainLayout';
-import Logo from '~/components/Nav/Logo';
 
 const ThemeSwitch = () => {
 	const { dark, toggle } = useContext(ThemeContext);
@@ -22,7 +18,7 @@ const ThemeSwitch = () => {
 		<Switch
 			checked={dark}
 			onChange={toggle}
-			className='group inline-flex h-6 w-11 items-center rounded-full bg-cinder-400 transition data-[checked]:bg-blue-500'
+			className='group inline-flex h-6 w-11 items-center rounded-full bg-cinder-400 transition data-[checked]:bg-violet-500 dark:data-[checked]:bg-violet-600'
 		>
 			<span className='size-4 translate-x-1 rounded-full bg-cinder-50 transition group-data-[checked]:translate-x-6' />
 		</Switch>
@@ -30,7 +26,7 @@ const ThemeSwitch = () => {
 };
 
 const Row = ({ children }: { children: React.ReactNode }) => (
-	<div className='hover:bg-cinder-100 hover:dark:bg-cinder-900 rounded-lg flex p-2 gap-4 items-center font-medium'>
+	<div className='hover:bg-cinder-100 dark:hover:bg-cinder-950 rounded-lg flex p-2 gap-4 items-center justify-between font-medium'>
 		{children}
 	</div>
 );
@@ -44,26 +40,35 @@ const Settings = () => {
 	};
 
 	return (
-		<MainLayout>
-			<div className=''>
-				<Logo />
-			</div>
-			<div className='border-t border-cinder-950' />
+		<>
 			{currentUser ? (
 				<>
 					<Row>
-						<span>{currentUser.email}</span>
+						<span className=''>{currentUser.email}</span>
 					</Row>
 					<Row>
-						<PersonIcon className='text-xl' />
-						Account
-						<RightIcon className='text-xl ml-auto dark:text-cinder-300' />
+						<span className='flex items-center gap-4'>
+							<PersonIcon className='text-2xl dark:text-violet-400' />
+							Account
+						</span>
+						<RightIcon className='text-xl dark:text-cinder-300' />
 					</Row>
 				</>
 			) : null}
 			<div className='border-t border-cinder-950' />
+			<div className='flex p-0 gap-4 items-center justify-between font-medium'>
+				<span className='flex items-center gap-4 p-2'>
+					<GlobeIcon className='text-2xl dark:text-violet-400' />
+					Language
+				</span>
+				<span className='ml-auto px-2'>
+					<select className='cursor-pointer bg-cinder-950 rounded-lg p-2'>
+						<option value=''>English</option>
+					</select>
+				</span>
+			</div>
 			<Row>
-				<MoonIcon className='text-2xl' />
+				<MoonIcon className='text-2xl dark:text-violet-400' />
 				Dark theme
 				<span className='ml-auto'>
 					<ThemeSwitch />
@@ -72,12 +77,12 @@ const Settings = () => {
 			{currentUser ? (
 				<Row>
 					<button onClick={handleSignOut} className='flex grow gap-4'>
-						<LogOutIcon className='text-2xl text-cinder-500 dark:text-cinder-300' />
+						<LogOutIcon className='text-2xl text-cinder-500 dark:text-cinder-500' />
 						Sign out
 					</button>
 				</Row>
 			) : null}
-		</MainLayout>
+		</>
 	);
 };
 export default Settings;

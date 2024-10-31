@@ -1,3 +1,4 @@
+import { Navigate, RouteObject } from 'react-router-dom';
 import Home from '~/pages/Home';
 import Garage from '~/pages/Garage';
 import Car from '~/pages/Car';
@@ -8,12 +9,13 @@ import Settings from '~/pages/Settings';
 import SignUp from '~/pages/SignUp';
 import SignIn from '~/pages/SignIn';
 import Layout from '~/layouts/Layout';
-import CarControls from '~/components/AppBar/CarControls';
-import RecordsControls from '~/components/AppBar/RecordsControls';
-import RecordControls from '~/components/AppBar/RecordControls';
 import GeneralLayout from '~/layouts/GeneralLayout';
-import { Navigate, RouteObject } from 'react-router-dom';
-import GarageControls from '~/components/AppBar/GarageControls';
+import {
+	GarageControls,
+	CarControls,
+	MaintenanceControls,
+	RecordControls,
+} from '~/components/AppBar/PageControls';
 
 export const privateRoutes: RouteObject[] = [
 	{
@@ -38,7 +40,7 @@ export const privateRoutes: RouteObject[] = [
 	},
 	{
 		path: 'maintenance',
-		element: <Layout Controls={<RecordsControls />} />,
+		element: <Layout Controls={<MaintenanceControls />} />,
 		children: [
 			{
 				index: true,

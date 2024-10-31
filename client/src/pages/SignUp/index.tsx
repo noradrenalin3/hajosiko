@@ -1,12 +1,9 @@
 import { AuthError } from 'firebase/auth';
-import MainLayout from '~/layouts/MainLayout';
 import Form from '~/components/Form';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signUpUser } from '~/firebase/firebase';
 import { FormDefs } from '~/types/form.types';
-import Toolbar from '~/components/Toolbar';
-import BackButton from '~/components/Button/BackButton';
 
 const fields: FormDefs[] = [
 	{
@@ -80,27 +77,22 @@ const SignUp = () => {
 	};
 
 	return (
-		<MainLayout>
-			<Toolbar>
-				<BackButton />
-			</Toolbar>
-			<div className='p-4 rounded-lg'>
-				<Form onSubmit={handleSignUp} fields={fields} title='Sign up'>
-					<button
-						type='submit'
-						className='grow bg-custom-purple-light font-medium rounded-lg py-2'
-					>
-						Sign up
-					</button>
-					<span className='flex justify-center gap-2 font-medium mt-2'>
-						<p>Already have an account?</p>
-						<Link to='/signin' className='text-blue-500'>
-							Login now
-						</Link>
-					</span>
-				</Form>
-			</div>
-		</MainLayout>
+		<div className='flex flex-col items-center p-4'>
+			<Form onSubmit={handleSignUp} fields={fields} title='Sign up'>
+				<button
+					type='submit'
+					className='grow bg-violet-600 font-medium rounded-lg py-2'
+				>
+					Sign up
+				</button>
+				<span className='flex justify-center gap-2 font-medium mt-2'>
+					<p>Already have an account?</p>
+					<Link to='/signin' className='text-blue-500'>
+						Login now
+					</Link>
+				</span>
+			</Form>
+		</div>
 	);
 };
 

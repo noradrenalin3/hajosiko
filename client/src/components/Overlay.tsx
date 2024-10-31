@@ -6,7 +6,7 @@ import {
 } from '@headlessui/react';
 import { ReactNode } from 'react';
 
-const Modal = ({
+const Overlay = ({
 	children,
 	isOpen,
 	close,
@@ -26,14 +26,14 @@ const Modal = ({
 				className='relative z-50 overflow-y-auto'
 			>
 				<DialogBackdrop className='fixed inset-0 bg-black/50 backdrop-blur-sm' />
-				<div className='fixed inset-0 flex w-screen items-center justify-center p-4'>
-					<DialogPanel className='w-full max-w-sm space-y-4 bg-cinder-900 p-4 rounded-lg'>
+				<div className='fixed inset-0 flex w-screen items-center justify-center'>
+					<DialogPanel className='w-full h-full space-y-4 bg-cinder-1000 p-4'>
 						<div
-							className={`
-							fixed left-0 bottom-0 w-full rounded-t-lg h-fit
+							className={`overflow-y-auto
+							fixed left-0 bottom-0 w-full rounded-t-lg min-h-full
 							p-8
 							bg-cinder-200 dark:bg-cinder-1000
-							sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:max-w-lg sm:rounded-lg
+							top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:max-w-lg
 						`}
 						>
 							{title && (
@@ -52,4 +52,4 @@ const Modal = ({
 	);
 };
 
-export default Modal;
+export default Overlay;

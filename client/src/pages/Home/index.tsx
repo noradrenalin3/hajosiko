@@ -1,18 +1,13 @@
-import MainLayout from '~/layouts/MainLayout';
 import { useContext } from 'react';
 import { AuthContext } from '~/context/AuthContext';
-import Toolbar from '~/components/Toolbar';
-import Logo from '~/components/Nav/Logo';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
 	const { currentUser } = useContext(AuthContext);
 
 	return (
-		<MainLayout>
-			<Toolbar>
-				<Logo />
-				<div />
+		<>
+			<div className=''>
 				{!currentUser ? (
 					<div className='flex gap-4'>
 						<Link
@@ -31,21 +26,17 @@ const Home = () => {
 						</Link>
 					</div>
 				) : null}
-			</Toolbar>
-			{!currentUser ? null : (
-				<div className=''>
-					<p className=''>
-						Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod
-						tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim
-						veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex
-						ea commodi consequat. Quis aute iure reprehenderit in voluptate
-						velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-						obcaecat cupiditat non proident, sunt in culpa qui officia deserunt
-						mollit anim id est laborum.
-					</p>
-				</div>
-			)}
-		</MainLayout>
+				<p className=''>
+					Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod
+					tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim
+					veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex
+					ea commodi consequat. Quis aute iure reprehenderit in voluptate velit
+					esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat
+					cupiditat non proident, sunt in culpa qui officia deserunt mollit anim
+					id est laborum.
+				</p>
+			</div>
+		</>
 	);
 };
 

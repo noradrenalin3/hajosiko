@@ -10,6 +10,12 @@ export default {
 				main: 'rgba(0, 0, 0, 0.2) 0px 0px 5px 1px',
 				//custom: 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px',
 			},
+			zIndex: {
+				999: '999',
+			},
+			aspectRatio: {
+				'3/2': 'aspect-ratio: 3 / 3',
+			},
 			colors: {
 				bw: {
 					950: '#171717',
@@ -38,6 +44,19 @@ export default {
 					900: '#4e5561',
 					950: '#2e3238',
 					black: '#27272a',
+				},
+				violet: {
+					50: '#eff3fe',
+					100: '#e2e8fd',
+					200: '#cbd5fa',
+					300: '#abb9f6',
+					400: '#8994f0',
+					500: '#6d70e7',
+					600: '#5a54db',
+					700: '#4942c0',
+					800: '#3d389b',
+					900: '#35347b',
+					950: '#201e48',
 				},
 				blu: {
 					50: '#f2f6fc',

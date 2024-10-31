@@ -1,4 +1,3 @@
-//import { PiPencilSimple as PencilIcon } from 'react-icons/pi';
 import { IoPencil as PencilIcon } from 'react-icons/io5';
 
 const EditButton = ({ onClick }: { onClick: () => void }) => (
