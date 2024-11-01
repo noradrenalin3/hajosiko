@@ -1,10 +1,20 @@
-import { db } from '#db/db.pool.js';
+import { db } from '#db/db.pool';
 import {
 	ServiceRecord,
 	ServiceRecordUpdate,
 	NewServiceRecord,
-} from '#db/db.types.js';
-import { RecordWithCar } from '#types/record.types';
+} from '#db/db.types';
+import { DeleteResult, sql } from 'kysely';
+
+async function isCarOwner(ownerId: string, carId: number): Promise<boolean> {
+	const row = await db
+		.selectFrom('cars')
+		.selectAll()
+		.where(sql`${sql.ref('id')}`, '=', carId)
+		.where(sql`${sql.ref('owner_id')}`, '=', ownerId)
+		.executeTakeFirst();
+	return row !== null;
+}
 
 export async function getRecords(uid: string): Promise<ServiceRecord[]> {
 	return await db
@@ -15,7 +25,10 @@ export async function getRecords(uid: string): Promise<ServiceRecord[]> {
 		.execute();
 }
 
-export async function getRecordsByCar(uid: string, carId: number) {
+export async function getRecordsByCar(
+	uid: string,
+	carId: number,
+): Promise<ServiceRecord[]> {
 	const direction = 'desc';
 	return await db
 		.selectFrom('service_records')
@@ -27,14 +40,27 @@ export async function getRecordsByCar(uid: string, carId: number) {
 		.execute();
 }
 
-export async function getRecordById(uid: string, id: number) {
+export async function getRecordById(
+	uid: string,
+	id: number,
+): Promise<ServiceRecord> {
 	return await db
 		.selectFrom('service_records')
-		.where('id', '=', id)
+		.selectAll('service_records')
+		.where('service_records.id', '=', id)
+		.innerJoin('cars', 'cars.id', 'service_records.car_id')
+		.where('cars.owner_id', '=', uid)
 		.executeTakeFirstOrThrow();
 }
 
-export async function createRecord(uid: string, record: NewServiceRecord) {
+export async function createRecord(
+	uid: string,
+	record: NewServiceRecord,
+): Promise<ServiceRecord> {
+	const isOwner = await isCarOwner(uid, record.car_id);
+	if (!isOwner) {
+		throw new Error('Unauthorized');
+	}
 	return await db
 		.insertInto('service_records')
 		.values(record)
@@ -46,20 +72,27 @@ export async function updateRecord(
 	uid: string,
 	id: number,
 	updateWith: ServiceRecordUpdate,
-) {
+): Promise<ServiceRecord> {
 	return await db
 		.updateTable('service_records')
-		.innerJoin('cars', (join) => join.on('cars.owner_id', '=', uid))
 		.set(updateWith)
-		.where('id', '=', id)
+		.from('cars')
+		.where('service_records.id', '=', id)
+		.whereRef('cars.id', '=', 'service_records.car_id')
+		.where('cars.owner_id', '=', uid)
+		.returningAll('service_records')
 		.executeTakeFirstOrThrow();
 }
 
-export async function deleteRecord(uid: string, id: number) {
+export async function deleteRecord(
+	uid: string,
+	id: number,
+): Promise<DeleteResult> {
 	return await db
 		.deleteFrom('service_records')
-		.innerJoin('cars', 'cars.id', 'service_records.car_id')
+		.using('cars')
+		.whereRef('service_records.car_id', '=', 'cars.id')
 		.where('cars.owner_id', '=', uid)
 		.where('service_records.id', '=', id)
-		.execute();
+		.executeTakeFirstOrThrow();
 }

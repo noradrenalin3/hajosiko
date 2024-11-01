@@ -1,7 +1,7 @@
 import express from 'express';
-import * as controller from '#controllers/car.controller.js';
-import { validateData } from '#middleware/validateData.js';
-import { carUpdateSchema, newCarSchema } from '#schemas/carSchemas.js';
+import * as controller from '#controllers/car.controller';
+import { validateData } from '#middleware/validateData';
+import { carUpdateSchema, newCarSchema } from '#schemas/carSchemas';
 
 const router = express.Router();
 

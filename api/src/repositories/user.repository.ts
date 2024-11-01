@@ -1,5 +1,5 @@
-import { db } from '#db/db.pool.js';
-import { User, NewUser } from '#db/db.types.js';
+import { db } from '#db/db.pool';
+import { User, NewUser } from '#db/db.types';
 
 export async function createUser(user: NewUser): Promise<User> {
 	return await db

@@ -1,10 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-	NewServiceRecord,
-	ServiceRecord,
-	ServiceRecordUpdate,
-} from '#db/db.types.js';
-import * as db from '#repositories/service.repository.js';
+import { NewServiceRecord, ServiceRecordUpdate } from '#db/db.types';
+import * as db from '#repositories/service.repository';
+import { DeleteResult } from 'kysely';
 
 export const getRecords = async (
 	req: Request,
@@ -45,10 +42,14 @@ export const createRecord = async (req: Request, res: Response) => {
 	res.status(200).json(result);
 };
 
-export const updateRecord = async (req: Request, res: Response) => {
+export const updateRecord = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	const uid = req.uid;
 	const { description, notes, date, kilometers, cost } = req.body;
-	const carId = Number(req.params.id);
+	const recordId = Number(req.params.id);
 	const updatedRecord: ServiceRecordUpdate = {
 		description: description,
 		notes: notes,
@@ -56,6 +57,15 @@ export const updateRecord = async (req: Request, res: Response) => {
 		kilometers: kilometers,
 		cost: cost,
 	};
-	const result = await db.updateRecord(uid, carId, updatedRecord);
+	const result = await db
+		.updateRecord(uid, recordId, updatedRecord)
+		.catch(next);
+	res.status(200).json(result);
+};
+
+export const deleteRecord = async (req: Request, res: Response) => {
+	const uid = req.uid;
+	const recordId = Number(req.params.id);
+	const result: DeleteResult = await db.deleteRecord(uid, recordId);
 	res.status(200).json(result);
 };

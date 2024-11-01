@@ -1,4 +1,4 @@
-import { db } from './db.pool.js';
+import { db } from '#db/db.pool';
 
 async function createTables() {
 	await db.schema
@@ -10,11 +10,11 @@ async function createTables() {
 	await db.schema
 		.createTable('cars')
 		.ifNotExists()
-		.addColumn('owner_id', 'varchar(48)', (cb) =>
-			cb.notNull().references('users.id').onDelete('cascade'),
-		)
 		.addColumn('id', 'integer', (cb) =>
 			cb.primaryKey().generatedAlwaysAsIdentity(),
+		)
+		.addColumn('owner_id', 'varchar(48)', (cb) =>
+			cb.notNull().references('users.id').onDelete('cascade'),
 		)
 		.addColumn('make', 'varchar(48)')
 		.addColumn('model', 'varchar(48)')
@@ -24,11 +24,11 @@ async function createTables() {
 	await db.schema
 		.createTable('service_records')
 		.ifNotExists()
-		.addColumn('car_id', 'integer', (cb) =>
-			cb.notNull().references('cars.id').onDelete('cascade'),
-		)
 		.addColumn('id', 'integer', (cb) =>
 			cb.primaryKey().generatedAlwaysAsIdentity(),
+		)
+		.addColumn('car_id', 'integer', (cb) =>
+			cb.notNull().references('cars.id').onDelete('cascade'),
 		)
 		.addColumn('description', 'text')
 		.addColumn('notes', 'text')

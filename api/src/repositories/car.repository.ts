@@ -1,11 +1,17 @@
-import { db } from '#db/db.pool.js';
-import { CarUpdate, NewCar } from '#db/db.types.js';
-import { sql } from 'kysely';
+import { db } from '#db/db.pool';
+import { Car, CarStats, CarUpdate, NewCar } from '#db/db.types';
+import { DeleteResult, sql } from 'kysely';
 
-export async function getCars(uid: string) {
+export async function getCars(uid: string): Promise<CarStats[]> {
 	return await db
 		.selectFrom('cars')
-		.selectAll('cars')
+		.select([
+			'cars.id',
+			'cars.make',
+			'cars.model',
+			'cars.year',
+			'cars.kilometers',
+		])
 		.where('owner_id', '=', uid)
 		.leftJoin('service_records', 'service_records.car_id', 'cars.id')
 		.select((eb) => [
@@ -26,7 +32,7 @@ export async function getCars(uid: string) {
 		.execute();
 }
 
-export async function getCarById(uid: string, id: number) {
+export async function getCarById(uid: string, id: number): Promise<CarStats> {
 	return await db
 		.selectFrom('cars')
 		.selectAll('cars')
@@ -51,7 +57,7 @@ export async function getCarById(uid: string, id: number) {
 		.executeTakeFirstOrThrow();
 }
 
-export async function createCar(car: NewCar) {
+export async function createCar(car: NewCar): Promise<Car> {
 	return await db
 		.insertInto('cars')
 		.values(car)
@@ -63,7 +69,7 @@ export async function updateCar(
 	uid: string,
 	id: number,
 	updateWith: CarUpdate,
-) {
+): Promise<Car> {
 	return await db
 		.updateTable('cars')
 		.set(updateWith)
@@ -73,7 +79,10 @@ export async function updateCar(
 		.executeTakeFirstOrThrow();
 }
 
-export async function deleteCar(uid: string, id: number) {
+export async function deleteCar(
+	uid: string,
+	id: number,
+): Promise<DeleteResult> {
 	return await db
 		.deleteFrom('cars')
 		.where('id', '=', id)

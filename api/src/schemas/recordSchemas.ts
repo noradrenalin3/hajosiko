@@ -10,4 +10,12 @@ export const newRecordSchema = z.object({
 	}),
 });
 
-export const recordUpdateSchema = newRecordSchema;
+export const recordUpdateSchema = z.object({
+	body: z.object({
+		description: z.string().min(2),
+		notes: z.string().max(255).optional(),
+		date: z.string(),
+		kilometers: z.number().min(0).max(10000000),
+		cost: z.number().min(0).max(10000000),
+	}),
+});

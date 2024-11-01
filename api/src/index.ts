@@ -1,12 +1,12 @@
+import '#polyfills';
 import express from 'express';
 import cors from 'cors';
-import carRouter from '#routes/car.router.js';
-import userRouter from '#routes/user.router.js';
-import serviceRouter from '#routes/service.router.js';
-import verifyToken from '#middleware/verifyToken.js';
-import { notFound } from '#middleware/notFound.js';
-import { errorHandler } from '#middleware/errorHandler.js';
-import createTables from '#db/db.init.js';
+import carRouter from '#routes/car.router';
+import userRouter from '#routes/user.router';
+import serviceRouter from '#routes/service.router';
+import verifyToken from '#middleware/verifyToken';
+import { notFound } from '#middleware/notFound';
+import { errorHandler } from '#middleware/errorHandler';
 
 declare global {
 	namespace Express {

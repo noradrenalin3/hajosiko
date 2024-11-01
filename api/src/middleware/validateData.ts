@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { z, ZodError, AnyZodObject } from 'zod';
+import { ZodError, AnyZodObject } from 'zod';
 
 export const validateData =
 	(validator: AnyZodObject) =>
@@ -11,8 +11,9 @@ export const validateData =
 				params: req.params,
 			});
 
-			next();
+			return next();
 		} catch (error) {
+			console.log(error);
 			if (error instanceof ZodError) {
 				return res.status(400).json({ message: error.issues[0].message });
 			}

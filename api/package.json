@@ -1,6 +1,8 @@
 {
 	"imports": {
-		"#*": "./dist/*"
+		"#*": "./dist/*.js",
+		"#tests": "./dist/tests",
+		"#json/*": "./json/*"
 	},
 	"type": "module",
 	"scripts": {

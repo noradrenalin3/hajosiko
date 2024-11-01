@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { NewCar, CarUpdate } from '#db/db.types.js';
-import * as db from '#repositories/car.repository.js';
-import { deleteImage } from '#controllers/image.controller.js';
+import { NewCar, CarUpdate, CarStats } from '#db/db.types';
+import * as db from '#repositories/car.repository';
+import { deleteImage } from '#controllers/image.controller';
 
 export const getCars = async (
 	req: Request,
@@ -9,7 +9,7 @@ export const getCars = async (
 	next: NextFunction,
 ) => {
 	const uid = req.uid;
-	const result = await db.getCars(uid).catch(next);
+	const result: CarStats[] = await db.getCars(uid);
 	res.status(200).json(result);
 };
 
@@ -20,7 +20,7 @@ export const getCarById = async (
 ) => {
 	const uid = req.uid;
 	const carId = Number(req.params.id);
-	const result = await db.getCarById(uid, carId).catch(next);
+	const result: CarStats = await db.getCarById(uid, carId);
 	res.status(200).json(result);
 };
 
@@ -57,6 +57,7 @@ export const updateCar = async (
 		kilometers: kilometers,
 	};
 	const result = await db.updateCar(uid, carId, updatedCar).catch(next);
+	console.log(result);
 	res.status(200).json(result);
 };
 
@@ -74,5 +75,5 @@ export const deleteCar = async (
 	}
 
 	await deleteImage(uid, carId).catch(next);
-	res.status(200).json(rows);
+	return res.status(200).json(rows);
 };

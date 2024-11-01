@@ -1,5 +1,5 @@
 import { getStorage } from 'firebase-admin/storage';
-import firebase from '#firebase/firebase-config.js';
+import firebase from '#firebase/firebase-config';
 
 export async function deleteImage(uid: string, carId: number) {
 	try {
