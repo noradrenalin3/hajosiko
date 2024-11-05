@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import Form, { FormButtons } from '~/components/Form';
-import { Car, NewCar } from '~/types/car.types';
+import { Car, NewCar } from '@shared/types';
 import { useCreateCar } from '~/hooks/useQuery';
 import ImageUpload from '~/components/ImageUpload';
 import Overlay from '~/components/Overlay';
@@ -83,17 +83,6 @@ const AddVehicleForm = ({
 		createCar(newCar);
 	};
 
-	const [preview, setPreview] = useState<string | null>(null);
-
-	const saveImage = (image: Blob) => {
-		imageRef.current = image;
-		setPreview(URL.createObjectURL(image));
-	};
-	const deleteImage = () => {
-		imageRef.current = null;
-		setPreview(null);
-	};
-
 	return (
 		<Overlay isOpen={isOpen} close={closeHandler}>
 			{pending ? (
@@ -101,11 +90,7 @@ const AddVehicleForm = ({
 			) : (
 				<Form onSubmit={handleSubmit} fields={fields} title='Create car'>
 					<label className='font-semibold'>Image</label>
-					{preview ? (
-						<Preview src={preview} deleteImage={deleteImage} />
-					) : (
-						<ImageUpload saveImage={saveImage} />
-					)}
+					<ImageUpload imageRef={imageRef} />
 					<FormButtons
 						cancelHandler={closeHandler}
 						submitLabel='Add'

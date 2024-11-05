@@ -1,6 +1,6 @@
 import { HTMLInputTypeAttribute, useContext, useRef, useState } from 'react';
 import Form, { FormButtons } from '~/components/Form';
-import { Car, CarUpdate, NewCar } from '~/types/car.types';
+import { Car, CarUpdate, NewCar } from '@shared/types';
 import { PiTrash as TrashIcon } from 'react-icons/pi';
 import { useDeleteCar, useUpdateCar } from '~/hooks/useQuery';
 import useStorage from '~/hooks/useStorage';
@@ -50,10 +50,10 @@ const EditForm = ({
 			kilometers: Number(form.kilometers.value),
 		};
 
-		updateCar(updated);
 		if (imageRef.current) {
 			uploadImage(imageRef.current);
 		}
+		updateCar(updated);
 	};
 	const fields: FormDefs[] = [
 		{
@@ -96,21 +96,11 @@ const EditForm = ({
 	};
 	const { uploadImage } = useStorage(car.id);
 
-	const [preview, setPreview] = useState<string | null>(null);
-	const saveImage = (image: Blob) => {
-		imageRef.current = image;
-		setPreview(URL.createObjectURL(image));
-	};
-	const deleteImage = () => {
-		imageRef.current = null;
-		setPreview(null);
-	};
-
 	return (
 		<Overlay isOpen={isOpen} close={closeHandler}>
 			<Form onSubmit={handleSubmit} fields={fields} title='Edit car'>
 				<label className='font-semibold'>Upload image</label>
-				<ImageUpload saveImage={saveImage} />
+				<ImageUpload imageRef={imageRef} />
 				<FormButtons cancelHandler={closeHandler} submitLabel='Save'>
 					<button
 						type='button'

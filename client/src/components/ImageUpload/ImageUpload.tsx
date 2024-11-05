@@ -6,6 +6,7 @@ import ImageUploading, {
 import { PiUploadSimple as UploadIcon } from 'react-icons/pi';
 import { ImageCropper } from './ImageCropper';
 import getCanvasBlob from './getCanvasBlob';
+import Preview from './Preview';
 
 const ImageUploadButton = ({
 	value,
@@ -34,37 +35,54 @@ const ImageUploadButton = ({
 	);
 };
 
-const ImageUpload = ({ saveImage }: { saveImage: (image: Blob) => void }) => {
+const ImageUpload = ({
+	imageRef,
+}: {
+	imageRef: React.MutableRefObject<Blob | null>;
+}) => {
 	const [image, setImage] = useState<ImageType[]>([]);
-	//	const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
+	const [preview, setPreview] = useState<string | null>(null);
+
+	const saveImage = (image: Blob) => {
+		imageRef.current = image;
+		setPreview(URL.createObjectURL(image));
+	};
+	const deleteImage = () => {
+		imageRef.current = null;
+		setPreview(null);
+	};
 
 	return (
-		<div>
-			<ImageUploadButton
-				value={image}
-				onChange={(newImage) => {
-					setIsOpen(true);
-					setImage(newImage);
-				}}
-			/>
-			<ImageCropper
-				isOpen={isOpen}
-				onClose={() => setIsOpen(false)}
-				image={(image.length > 0 && image[0].dataURL) || ''}
-				onComplete={(imagePromise) => {
-					imagePromise.then(async (canvas) => {
-						const blob = await getCanvasBlob(canvas);
-						saveImage(blob);
-						//setCroppedImage(blob);
-						setIsOpen(false);
-					});
-				}}
-				containerClassName='relative w-full h-72 bg-cinder-800'
-			/>
+		<div className=''>
+			{preview ? (
+				<Preview src={preview} deleteImage={deleteImage} />
+			) : (
+				<>
+					<ImageUploadButton
+						value={image}
+						onChange={(newImage) => {
+							setIsOpen(true);
+							setImage(newImage);
+						}}
+					/>
+					<ImageCropper
+						isOpen={isOpen}
+						onClose={() => setIsOpen(false)}
+						image={(image.length > 0 && image[0].dataURL) || ''}
+						onComplete={(imagePromise) => {
+							imagePromise.then(async (canvas) => {
+								const blob = await getCanvasBlob(canvas);
+								saveImage(blob);
+								setIsOpen(false);
+							});
+						}}
+						containerClassName='relative w-full h-72 bg-cinder-800'
+					/>
+				</>
+			)}
 		</div>
 	);
 };
-//{croppedImage && <img src={croppedImage} alt='' className='w-full'/>}
 
 export { ImageUpload };

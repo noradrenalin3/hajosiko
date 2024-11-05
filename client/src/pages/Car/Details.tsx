@@ -1,4 +1,4 @@
-import { Car } from '~/types/car.types';
+import { Car } from '@shared/types';
 import formatKm from '~/utils/formatKm';
 import {
 	PiGauge as GaugeIcon,
@@ -57,10 +57,6 @@ const Details = ({ car, img }: { car: Car; img: string }) => {
 
 	return (
 		<div className='rounded-lg flex flex-col'>
-			<img
-				src={img}
-				className='w-full rounded-t-lg aspect-video bg-cinder-300'
-			/>
 			<div className='flex flex-col bg-cinder-50 dark:bg-cinder-975 rounded-b-lg p-4 gap-4'>
 				<div className='flex flex-col gap-0.5'>
 					<Row>

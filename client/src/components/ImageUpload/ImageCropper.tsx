@@ -7,6 +7,7 @@ import {
 	DialogTitle,
 } from '@headlessui/react';
 import clsx from 'clsx';
+import { options } from '~/constants/imageOptions';
 
 const createImage = (url: string): Promise<HTMLImageElement> => {
 	return new Promise((resolve, reject) => {
@@ -16,6 +17,42 @@ const createImage = (url: string): Promise<HTMLImageElement> => {
 		image.src = url;
 	});
 };
+
+async function resizeCanvas(
+	canvas: HTMLCanvasElement,
+): Promise<HTMLCanvasElement> {
+	if (options.maxWidth > canvas.width || options.maxHeight > canvas.height) {
+		return canvas;
+	}
+	const newCanvas = document.createElement('canvas');
+	const ratio = Math.min(
+		options.maxWidth / canvas.width,
+		options.maxHeight / canvas.height,
+	);
+	const newWidth = (canvas.width * ratio + 0.5) | 0;
+	const newHeight = (canvas.height * ratio + 0.5) | 0;
+	newCanvas.width = newWidth;
+	newCanvas.height = newHeight;
+
+	const ctx = newCanvas.getContext('2d');
+	if (!ctx) {
+		throw new Error('Error resizing image');
+	}
+	ctx.drawImage(
+		canvas,
+		0,
+		0,
+		canvas.width,
+		canvas.height,
+		0,
+		0,
+		newWidth,
+		newHeight,
+	);
+
+	return newCanvas;
+}
+
 async function getCroppedImg(
 	imageSrc: string,
 	pixelCrop: Area,
@@ -47,7 +84,7 @@ async function getCroppedImg(
 		Math.round(0 - safeArea / 2 + image.height * 0.5 - pixelCrop.y),
 	);
 
-	return canvas;
+	return await resizeCanvas(canvas);
 }
 
 async function cropImage(
