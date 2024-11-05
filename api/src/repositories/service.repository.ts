@@ -6,11 +6,14 @@ import {
 } from '#db/db.types';
 import { DeleteResult, sql } from 'kysely';
 
-async function isCarOwner(ownerId: string, carId: number): Promise<boolean> {
+async function isVehicleOwner(
+	ownerId: string,
+	vehicleId: number,
+): Promise<boolean> {
 	const row = await db
-		.selectFrom('cars')
+		.selectFrom('vehicles')
 		.selectAll()
-		.where(sql`${sql.ref('id')}`, '=', carId)
+		.where(sql`${sql.ref('id')}`, '=', vehicleId)
 		.where(sql`${sql.ref('owner_id')}`, '=', ownerId)
 		.executeTakeFirst();
 	return row !== null;
@@ -20,22 +23,22 @@ export async function getRecords(uid: string): Promise<ServiceRecord[]> {
 	return await db
 		.selectFrom('service_records')
 		.selectAll('service_records')
-		.innerJoin('cars', 'cars.id', 'service_records.car_id')
-		.where('cars.owner_id', '=', uid)
+		.innerJoin('vehicles', 'vehicles.id', 'service_records.vehicle_id')
+		.where('vehicles.owner_id', '=', uid)
 		.execute();
 }
 
-export async function getRecordsByCar(
+export async function getRecordsByVehicle(
 	uid: string,
-	carId: number,
+	vehicleId: number,
 ): Promise<ServiceRecord[]> {
 	const direction = 'desc';
 	return await db
 		.selectFrom('service_records')
 		.selectAll('service_records')
-		.innerJoin('cars', 'cars.id', 'service_records.car_id')
-		.where('cars.owner_id', '=', uid)
-		.where('cars.id', '=', carId)
+		.innerJoin('vehicles', 'vehicles.id', 'service_records.vehicle_id')
+		.where('vehicles.owner_id', '=', uid)
+		.where('vehicles.id', '=', vehicleId)
 		.orderBy('service_records.date', direction)
 		.execute();
 }
@@ -48,8 +51,8 @@ export async function getRecordById(
 		.selectFrom('service_records')
 		.selectAll('service_records')
 		.where('service_records.id', '=', id)
-		.innerJoin('cars', 'cars.id', 'service_records.car_id')
-		.where('cars.owner_id', '=', uid)
+		.innerJoin('vehicles', 'vehicles.id', 'service_records.vehicle_id')
+		.where('vehicles.owner_id', '=', uid)
 		.executeTakeFirstOrThrow();
 }
 
@@ -57,7 +60,7 @@ export async function createRecord(
 	uid: string,
 	record: NewServiceRecord,
 ): Promise<ServiceRecord> {
-	const isOwner = await isCarOwner(uid, record.car_id);
+	const isOwner = await isVehicleOwner(uid, record.vehicle_id);
 	if (!isOwner) {
 		throw new Error('Unauthorized');
 	}
@@ -76,10 +79,10 @@ export async function updateRecord(
 	return await db
 		.updateTable('service_records')
 		.set(updateWith)
-		.from('cars')
+		.from('vehicles')
 		.where('service_records.id', '=', id)
-		.whereRef('cars.id', '=', 'service_records.car_id')
-		.where('cars.owner_id', '=', uid)
+		.whereRef('vehicles.id', '=', 'service_records.vehicle_id')
+		.where('vehicles.owner_id', '=', uid)
 		.returningAll('service_records')
 		.executeTakeFirstOrThrow();
 }
@@ -90,9 +93,9 @@ export async function deleteRecord(
 ): Promise<DeleteResult> {
 	return await db
 		.deleteFrom('service_records')
-		.using('cars')
-		.whereRef('service_records.car_id', '=', 'cars.id')
-		.where('cars.owner_id', '=', uid)
+		.using('vehicles')
+		.whereRef('service_records.vehicle_id', '=', 'vehicles.id')
+		.where('vehicles.owner_id', '=', uid)
 		.where('service_records.id', '=', id)
 		.executeTakeFirstOrThrow();
 }

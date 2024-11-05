@@ -1,22 +1,22 @@
-import { CarSelect } from '~/components/Toolbar';
+import { VehicleSelect } from '~/components/Toolbar';
 import Toolbar from '~/components/Toolbar';
 import EditButton from '~/components/Button/EditButton';
 import {
-	PiCaretRightBold as RightIcon,
+	PiVehicleetRightBold as RightIcon,
 	PiGarageFill as GarageIcon,
 } from 'react-icons/pi';
-import EditForm from '~/pages/Car/EditForm';
-import { useCarById, useCars } from '~/hooks/useQuery';
+import EditForm from '~/pages/Vehicle/EditForm';
+import { useVehicleById, useVehicles } from '~/hooks/useQuery';
 import { useContext, useState } from 'react';
 import { AppContext } from '~/context/AppContext';
 import { Link } from 'react-router-dom';
 import invariant from '~/utils/invariant';
 
-const CarBar = () => {
-	const { carId } = useContext(AppContext);
-	invariant(carId);
+const VehicleBar = () => {
+	const { vehicleId } = useContext(AppContext);
+	invariant(vehicleId);
 
-	const { data: car, isLoading, error } = useCarById(carId);
+	const { data: vehicle, isLoading, error } = useVehicleById(vehicleId);
 
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleModal = () => setIsOpen(!isOpen);
@@ -27,15 +27,15 @@ const CarBar = () => {
 	if (isLoading) {
 		return <div>Loading...</div>;
 	}
-	if (!car) {
+	if (!vehicle) {
 		return <div>No data</div>;
 	}
 
 	return (
 		<div className='ml-auto'>
-			<EditForm isOpen={isOpen} closeHandler={toggleModal} car={car} />
+			<EditForm isOpen={isOpen} closeHandler={toggleModal} vehicle={vehicle} />
 			<EditButton onClick={toggleModal} />
 		</div>
 	);
 };
-export default CarBar;
+export default VehicleBar;

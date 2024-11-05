@@ -1,8 +1,8 @@
 import { HTMLInputTypeAttribute, useContext, useRef, useState } from 'react';
 import Form, { FormButtons } from '~/components/Form';
-import { Car, CarUpdate, NewCar } from '@shared/types';
+import { Vehicle, VehicleUpdate, NewVehicle } from '@shared/types';
 import { PiTrash as TrashIcon } from 'react-icons/pi';
-import { useDeleteCar, useUpdateCar } from '~/hooks/useQuery';
+import { useDeleteVehicle, useUpdateVehicle } from '~/hooks/useQuery';
 import useStorage from '~/hooks/useStorage';
 import ImageUpload from '~/components/ImageUpload';
 import Overlay from '~/components/Overlay';
@@ -19,31 +19,31 @@ type FormDefs = {
 };
 
 const EditForm = ({
-	car,
+	vehicle,
 	isOpen,
 	closeHandler,
 }: {
-	car: Car;
+	vehicle: Vehicle;
 	isOpen: boolean;
 	closeHandler: () => void;
 }) => {
 	const imageRef = useRef<Blob | null>(null);
 	const {
-		mutate: updateCar,
+		mutate: updateVehicle,
 		isPending,
 		isSuccess,
 		isError,
-	} = useUpdateCar(car.id, closeHandler);
+	} = useUpdateVehicle(vehicle.id, closeHandler);
 	const {
-		mutate: deleteCar,
+		mutate: deleteVehicle,
 		isPending: deletePending,
 		isSuccess: deleteSuccess,
 		isError: deleteError,
-	} = useDeleteCar(car.id);
+	} = useDeleteVehicle(vehicle.id);
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const form = e.currentTarget;
-		const updated: CarUpdate = {
+		const updated: VehicleUpdate = {
 			make: form.make.value,
 			model: form.model.value,
 			year: Number(form.year.value),
@@ -53,7 +53,7 @@ const EditForm = ({
 		if (imageRef.current) {
 			uploadImage(imageRef.current);
 		}
-		updateCar(updated);
+		updateVehicle(updated);
 	};
 	const fields: FormDefs[] = [
 		{
@@ -61,20 +61,20 @@ const EditForm = ({
 			name: 'make',
 			placeholder: 'Make',
 			required: true,
-			defaultValue: car.make,
+			defaultValue: vehicle.make,
 		},
 		{
 			type: 'text',
 			name: 'model',
 			placeholder: 'Model',
 			required: true,
-			defaultValue: car.model,
+			defaultValue: vehicle.model,
 		},
 		{
 			type: 'number',
 			name: 'year',
 			placeholder: 'Year',
-			defaultValue: car.year.toString(),
+			defaultValue: vehicle.year.toString(),
 			required: true,
 			min: '1900',
 			max: '2099',
@@ -85,20 +85,20 @@ const EditForm = ({
 			name: 'kilometers',
 			placeholder: 'Kilometers',
 			required: true,
-			defaultValue: car.kilometers.toString(),
+			defaultValue: vehicle.kilometers.toString(),
 		},
 	];
 	const deleteFn = () => {
-		deleteCar();
+		deleteVehicle();
 		if (deleteSuccess) {
 			closeHandler();
 		}
 	};
-	const { uploadImage } = useStorage(car.id);
+	const { uploadImage } = useStorage(vehicle.id);
 
 	return (
 		<Overlay isOpen={isOpen} close={closeHandler}>
-			<Form onSubmit={handleSubmit} fields={fields} title='Edit car'>
+			<Form onSubmit={handleSubmit} fields={fields} title='Edit vehicle'>
 				<label className='font-semibold'>Upload image</label>
 				<ImageUpload imageRef={imageRef} />
 				<FormButtons cancelHandler={closeHandler} submitLabel='Save'>

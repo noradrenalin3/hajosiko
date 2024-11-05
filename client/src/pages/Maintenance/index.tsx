@@ -24,14 +24,14 @@ const Status = () => {
 
 const Maintenance = () => {
 	const { currentUser } = useContext(AuthContext);
-	const { carId } = useContext(AppContext);
+	const { vehicleId } = useContext(AppContext);
 
 	const {
 		data: service_records,
 		isFetching: recordsFetching,
 		isError: recordsIsError,
 		status: recordsStatus,
-	} = useServiceRecords(carId);
+	} = useServiceRecords(vehicleId);
 
 	if (recordsStatus === 'error') {
 		return <div>Error</div>;
@@ -50,7 +50,10 @@ const Maintenance = () => {
 				{!service_records ? (
 					<div>No records</div>
 				) : (
-					<Records showAll={carId === undefined} records={service_records} />
+					<Records
+						showAll={vehicleId === undefined}
+						records={service_records}
+					/>
 				)}
 			</div>
 		</div>

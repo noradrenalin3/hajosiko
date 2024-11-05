@@ -17,7 +17,7 @@ export const MainNav = () => {
 		`}
 		>
 			<nav className='flex gap-4 grow justify-evenly'>
-				<NavbarLink to='/car' text='Car' icon={<CarIcon />} />
+				<NavbarLink to='/vehicle' text='Car' icon={<CarIcon />} />
 				<NavbarLink
 					to='/maintenance'
 					text='Maintenance'

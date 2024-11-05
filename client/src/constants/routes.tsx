@@ -1,7 +1,7 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 import Home from '~/pages/Home';
 import Garage from '~/pages/Garage';
-import Car from '~/pages/Car';
+import Vehicle from '~/pages/Vehicle';
 import Maintenance from '~/pages/Maintenance';
 import RecordDetails from '~/pages/Maintenance/RecordDetails';
 import Reminders from '~/pages/Reminders';
@@ -12,7 +12,7 @@ import Layout from '~/layouts/Layout';
 import GeneralLayout from '~/layouts/GeneralLayout';
 import {
 	GarageControls,
-	CarControls,
+	VehicleControls,
 	MaintenanceControls,
 	RecordControls,
 } from '~/components/AppBar/PageControls';
@@ -29,12 +29,12 @@ export const privateRoutes: RouteObject[] = [
 		],
 	},
 	{
-		path: 'car',
-		element: <Layout Controls={<CarControls />} />,
+		path: 'vehicle',
+		element: <Layout Controls={<VehicleControls />} />,
 		children: [
 			{
 				index: true,
-				element: <Car />,
+				element: <Vehicle />,
 			},
 		],
 	},

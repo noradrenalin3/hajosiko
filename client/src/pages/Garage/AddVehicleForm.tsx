@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import Form, { FormButtons } from '~/components/Form';
-import { Car, NewCar } from '@shared/types';
-import { useCreateCar } from '~/hooks/useQuery';
+import { Vehicle, NewVehicle } from '@shared/types';
+import { useCreateVehicle } from '~/hooks/useQuery';
 import ImageUpload from '~/components/ImageUpload';
 import Overlay from '~/components/Overlay';
 import { FormDefs } from '~/types/form.types';
@@ -56,31 +56,31 @@ const AddVehicleForm = ({
 	};
 	const { uploadImage } = useUploadImage(afterUpload);
 
-	const onSuccess = (car: Car) => {
+	const onSuccess = (vehicle: Vehicle) => {
 		if (!imageRef.current) {
 			return closeHandler();
 		}
-		uploadImage(imageRef.current, car.id);
+		uploadImage(imageRef.current, vehicle.id);
 	};
 
 	const {
-		mutate: createCar,
+		mutate: createVehicle,
 		isPending,
 		isSuccess,
 		isError,
-	} = useCreateCar(onSuccess);
+	} = useCreateVehicle(onSuccess);
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPending(true);
 		const form = e.currentTarget;
-		const newCar: NewCar = {
+		const newVehicle: NewVehicle = {
 			make: form.make.value,
 			model: form.model.value,
 			year: Number(form.year.value),
 			kilometers: Number(form.kilometers.value),
 		};
-		createCar(newCar);
+		createVehicle(newVehicle);
 	};
 
 	return (
@@ -88,7 +88,7 @@ const AddVehicleForm = ({
 			{pending ? (
 				<div>Pending...</div>
 			) : (
-				<Form onSubmit={handleSubmit} fields={fields} title='Create car'>
+				<Form onSubmit={handleSubmit} fields={fields} title='Create vehicle'>
 					<label className='font-semibold'>Image</label>
 					<ImageUpload imageRef={imageRef} />
 					<FormButtons

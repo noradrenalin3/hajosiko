@@ -8,6 +8,8 @@ export default {
 			},
 			boxShadow: {
 				main: 'rgba(0, 0, 0, 0.2) 0px 0px 5px 1px',
+				'border-dark': '0 0 0 1px #272729',
+				'border-light': '0 0 0 1px #aeafb2',
 				//custom: 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px',
 			},
 			zIndex: {

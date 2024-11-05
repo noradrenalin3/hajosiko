@@ -6,14 +6,14 @@ import useAuth from '~/hooks/useAuth';
 const useUploadImage = (onSuccess: () => void) => {
 	const { currentUser } = useAuth();
 
-	const uploadImage = async (image: Blob, carId: number) => {
+	const uploadImage = async (image: Blob, vehicleId: number) => {
 		try {
 			if (!currentUser) {
 				throw new Error('No active user');
 			}
 			const imageRef = storageRef(
 				storage,
-				`images/${currentUser.uid}/car-${carId}`,
+				`images/${currentUser.uid}/vehicle-${vehicleId}`,
 			);
 
 			uploadBytes(imageRef, image)

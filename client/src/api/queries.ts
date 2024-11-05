@@ -1,7 +1,7 @@
 import type {
-	Car,
-	CarUpdate,
-	NewCar,
+	Vehicle,
+	VehicleUpdate,
+	NewVehicle,
 	ServiceRecord,
 	NewServiceRecord,
 	ServiceRecordUpdate,
@@ -10,9 +10,9 @@ import { User } from 'firebase/auth';
 
 const baseUrl = 'http://localhost:3000/api';
 
-export async function getCars(user: User): Promise<Car[]> {
+export async function getVehicles(user: User): Promise<Vehicle[]> {
 	const token = await user.getIdToken();
-	const response = await fetch(baseUrl + '/cars', {
+	const response = await fetch(baseUrl + '/vehicles', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -20,16 +20,19 @@ export async function getCars(user: User): Promise<Car[]> {
 		},
 	});
 	if (!response.ok) {
-		throw new Error('Error fetching cars');
+		throw new Error('Error fetching vehicles');
 	}
-	const cars: Car[] = await response.json();
-	console.log(cars);
-	return cars;
+	const vehicles: Vehicle[] = await response.json();
+	console.log(vehicles);
+	return vehicles;
 }
 
-export async function getCar(user: User, carId: number): Promise<Car> {
+export async function getVehicle(
+	user: User,
+	vehicleId: number,
+): Promise<Vehicle> {
 	const token = await user.getIdToken();
-	const response = await fetch(baseUrl + '/cars/' + carId, {
+	const response = await fetch(baseUrl + '/vehicles/' + vehicleId, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -37,55 +40,58 @@ export async function getCar(user: User, carId: number): Promise<Car> {
 		},
 	});
 	if (!response.ok) {
-		throw new Error('Error fetching cars');
+		throw new Error('Error fetching vehicles');
 	}
-	const car: Car = await response.json();
-	console.log(car);
-	return car;
+	const vehicle: Vehicle = await response.json();
+	console.log(vehicle);
+	return vehicle;
 }
 
-export async function createCar(user: User, newCar: NewCar): Promise<Car> {
+export async function createVehicle(
+	user: User,
+	newVehicle: NewVehicle,
+): Promise<Vehicle> {
 	const token = await user.getIdToken();
-	const response = await fetch(baseUrl + '/cars', {
+	const response = await fetch(baseUrl + '/vehicles', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
 		},
-		body: JSON.stringify(newCar),
+		body: JSON.stringify(newVehicle),
 	});
 	if (!response.ok) {
-		throw new Error('Error adding car');
+		throw new Error('Error adding vehicle');
 	}
-	const car: Car = await response.json();
-	return car;
+	const vehicle: Vehicle = await response.json();
+	return vehicle;
 }
 
-export async function updateCar(
+export async function updateVehicle(
 	user: User,
 	id: number,
-	car: CarUpdate,
-): Promise<Car> {
+	vehicle: VehicleUpdate,
+): Promise<Vehicle> {
 	const token = await user.getIdToken();
 
-	const response = await fetch(`${baseUrl}/cars/${id}`, {
+	const response = await fetch(`${baseUrl}/vehicles/${id}`, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
 		},
-		body: JSON.stringify(car),
+		body: JSON.stringify(vehicle),
 	});
 	if (!response.ok) {
-		throw new Error('Error adding car');
+		throw new Error('Error adding vehicle');
 	}
-	const result: Car = await response.json();
+	const result: Vehicle = await response.json();
 	return result;
 }
-export async function deleteCar(user: User, id: number): Promise<Car> {
+export async function deleteVehicle(user: User, id: number): Promise<Vehicle> {
 	const token = await user.getIdToken();
 
-	const response = await fetch(`${baseUrl}/cars/${id}`, {
+	const response = await fetch(`${baseUrl}/vehicles/${id}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
@@ -93,23 +99,23 @@ export async function deleteCar(user: User, id: number): Promise<Car> {
 		},
 	});
 	if (!response.ok) {
-		throw new Error('Error deleting car');
+		throw new Error('Error deleting vehicle');
 	}
-	const result: Car = await response.json();
+	const result: Vehicle = await response.json();
 	return result;
 }
 
 export async function getServiceRecords(
 	user: User,
-	carId?: number,
+	vehicleId?: number,
 ): Promise<ServiceRecord[]> {
 	const token = await user.getIdToken();
 	console.log(token);
 
 	const getUrl = () => {
-		if (carId) {
+		if (vehicleId) {
 			const params = new URLSearchParams({
-				car: carId.toString(),
+				vehicle: vehicleId.toString(),
 			}).toString();
 			return `${baseUrl}/records?${params}`;
 		} else {
@@ -129,10 +135,10 @@ export async function getServiceRecords(
 		throw new Error('Error fetching ');
 	}
 	const records: ServiceRecord[] = await response.json();
-	if (!carId) {
+	if (!vehicleId) {
 		console.log('all records:', records);
 	} else {
-		console.log('car-' + carId, 'records:', records);
+		console.log('vehicle-' + vehicleId, 'records:', records);
 	}
 	if (records.length < 2) {
 		return records;
@@ -178,8 +184,47 @@ export async function createServiceRecord(
 		body: JSON.stringify(record),
 	});
 	if (!response.ok) {
-		console.log(response.status);
-		throw new Error('Error fetching ');
+		throw new Error('Error creating record');
+	}
+	const result: ServiceRecord = await response.json();
+	return result;
+}
+
+export async function deleteRecord(user: User, id: number): Promise<unknown> {
+	const token = await user.getIdToken();
+
+	const response = await fetch(`${baseUrl}/records/${id}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+	});
+	if (!response.ok) {
+		throw new Error('Error deleting record');
+	}
+	const result: unknown = await response.json();
+	console.log(result);
+	return result;
+}
+
+export async function updateRecord(
+	user: User,
+	id: number,
+	record: ServiceRecordUpdate,
+): Promise<ServiceRecord> {
+	const token = await user.getIdToken();
+
+	const response = await fetch(`${baseUrl}/records/${id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify(record),
+	});
+	if (!response.ok) {
+		throw new Error('Error updating record');
 	}
 	const result: ServiceRecord = await response.json();
 	return result;

@@ -1,17 +1,24 @@
-import useCars from './useCars';
-import useCarById from './useCarById';
-import useCreateCar from './useCreateCar';
+import useVehicles from './useVehicles';
+import useVehicleById from './useVehicleById';
+import useCreateVehicle from './useCreateVehicle';
 import useCreateServiceRecord from './useCreateServiceRecord';
 import useServiceRecords from './useServiceRecords';
-import useUpdateCar from './useUpdateCar';
-import useDeleteCar from './useDeleteCar';
+import useRecordById from './useRecordById';
+import useUpdateRecord from './useUpdateRecord';
+import useDeleteRecord from './useDeleteRecord';
+
+import useUpdateVehicle from './useUpdateVehicle';
+import useDeleteVehicle from './useDeleteVehicle';
 
 export {
-	useCars,
-	useCarById,
-	useCreateCar,
-	useUpdateCar,
-	useDeleteCar,
+	useVehicles,
+	useVehicleById,
+	useCreateVehicle,
+	useUpdateVehicle,
+	useDeleteVehicle,
 	useCreateServiceRecord,
 	useServiceRecords,
+	useRecordById,
+	useDeleteRecord,
+	useUpdateRecord,
 };

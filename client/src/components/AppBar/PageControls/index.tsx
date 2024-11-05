@@ -1,6 +1,6 @@
 import GarageControls from './GarageControls';
-import CarControls from './CarControls';
+import VehicleControls from './VehicleControls';
 import RecordControls from './RecordControls';
 import MaintenanceControls from './MaintenanceControls';
 
-export { GarageControls, CarControls, RecordControls, MaintenanceControls };
+export { GarageControls, VehicleControls, RecordControls, MaintenanceControls };

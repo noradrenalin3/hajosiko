@@ -1,14 +1,14 @@
 import { db } from '#db/db.pool';
-import { Car, CarUpdate, NewCar } from '#db/db.types';
+import { Vehicle, VehicleUpdate, NewVehicle } from '#db/db.types';
 import { DeleteResult, sql } from 'kysely';
-import { Car as CarStats } from '@shared/types';
+import { Vehicle as VehicleStats } from '@shared/types';
 
-export async function getCars(uid: string): Promise<CarStats[]> {
+export async function getVehicles(uid: string): Promise<VehicleStats[]> {
 	return await db
-		.selectFrom('cars')
-		.selectAll('cars')
+		.selectFrom('vehicles')
+		.selectAll('vehicles')
 		.where('owner_id', '=', uid)
-		.leftJoin('service_records', 'service_records.car_id', 'cars.id')
+		.leftJoin('service_records', 'service_records.vehicle_id', 'vehicles.id')
 		.select((eb) => [
 			eb
 				.cast<number>(eb.fn.countAll<number>('service_records'), 'integer')
@@ -23,17 +23,20 @@ export async function getCars(uid: string): Promise<CarStats[]> {
 				)
 				.as('service_costs'),
 		])
-		.groupBy('cars.id')
+		.groupBy('vehicles.id')
 		.execute();
 }
 
-export async function getCarById(uid: string, id: number): Promise<CarStats> {
+export async function getVehicleById(
+	uid: string,
+	id: number,
+): Promise<VehicleStats> {
 	return await db
-		.selectFrom('cars')
-		.selectAll('cars')
-		.where('cars.owner_id', '=', uid)
-		.where('cars.id', '=', id)
-		.leftJoin('service_records', 'service_records.car_id', 'cars.id')
+		.selectFrom('vehicles')
+		.selectAll('vehicles')
+		.where('vehicles.owner_id', '=', uid)
+		.where('vehicles.id', '=', id)
+		.leftJoin('service_records', 'service_records.vehicle_id', 'vehicles.id')
 		.select((eb) => [
 			eb
 				.cast<number>(eb.fn.countAll<number>('service_records'), 'integer')
@@ -48,25 +51,25 @@ export async function getCarById(uid: string, id: number): Promise<CarStats> {
 				)
 				.as('service_costs'),
 		])
-		.groupBy('cars.id')
+		.groupBy('vehicles.id')
 		.executeTakeFirstOrThrow();
 }
 
-export async function createCar(car: NewCar): Promise<Car> {
+export async function createVehicle(vehicle: NewVehicle): Promise<Vehicle> {
 	return await db
-		.insertInto('cars')
-		.values(car)
+		.insertInto('vehicles')
+		.values(vehicle)
 		.returningAll()
 		.executeTakeFirstOrThrow();
 }
 
-export async function updateCar(
+export async function updateVehicle(
 	uid: string,
 	id: number,
-	updateWith: CarUpdate,
-): Promise<Car> {
+	updateWith: VehicleUpdate,
+): Promise<Vehicle> {
 	return await db
-		.updateTable('cars')
+		.updateTable('vehicles')
 		.set(updateWith)
 		.where('id', '=', id)
 		.where('owner_id', '=', uid)
@@ -74,12 +77,12 @@ export async function updateCar(
 		.executeTakeFirstOrThrow();
 }
 
-export async function deleteCar(
+export async function deleteVehicle(
 	uid: string,
 	id: number,
 ): Promise<DeleteResult> {
 	return await db
-		.deleteFrom('cars')
+		.deleteFrom('vehicles')
 		.where('id', '=', id)
 		.where('owner_id', '=', uid)
 		.executeTakeFirst();

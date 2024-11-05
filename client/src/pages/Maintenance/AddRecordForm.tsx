@@ -1,6 +1,6 @@
 import { FormDefs } from '~/types/form.types';
 import Form, { FormButtons } from '~/components/Form';
-import { NewServiceRecord } from '~/types/record.types';
+import { NewServiceRecord } from '@shared/types';
 import { AppContext } from '~/context/AppContext';
 import { useContext, useState } from 'react';
 import { useCreateServiceRecord } from '~/hooks/useQuery';
@@ -41,7 +41,7 @@ const AddRecordForm = ({
 	isOpen: boolean;
 	close: () => void;
 }) => {
-	const { carId } = useContext(AppContext);
+	const { vehicleId } = useContext(AppContext);
 	const {
 		mutate,
 		isPending,
@@ -50,7 +50,7 @@ const AddRecordForm = ({
 	} = useCreateServiceRecord();
 
 	const post = async (newRecord: NewServiceRecord) => {
-		if (!carId) {
+		if (!vehicleId) {
 			return console.error('This should never happen...');
 		}
 		mutate(newRecord);
@@ -60,11 +60,11 @@ const AddRecordForm = ({
 	const submit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const form = e.currentTarget;
-		if (!carId) {
-			return console.error('no carId');
+		if (!vehicleId) {
+			return console.error('no vehicleId');
 		}
 		const newRecord: NewServiceRecord = {
-			car_id: carId,
+			vehicle_id: vehicleId,
 			description: form.description.value,
 			notes: form.notes.value,
 			date: form.date.value,

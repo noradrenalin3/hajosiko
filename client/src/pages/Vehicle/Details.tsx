@@ -1,4 +1,4 @@
-import { Car } from '@shared/types';
+import { Vehicle } from '@shared/types';
 import formatKm from '~/utils/formatKm';
 import {
 	PiGauge as GaugeIcon,
@@ -36,11 +36,11 @@ const FavouriteButton = ({
 	</button>
 );
 
-const Details = ({ car, img }: { car: Car; img: string }) => {
+const Details = ({ vehicle, img }: { vehicle: Vehicle; img: string }) => {
 	const [isFavorite, setIsFavorite] = useState<boolean>(() => {
-		const localData = localStorage.getItem('favoriteCar');
+		const localData = localStorage.getItem('favoriteVehicle');
 		if (localData) {
-			return Number(JSON.parse(localData)) === car.id ? true : false;
+			return Number(JSON.parse(localData)) === vehicle.id ? true : false;
 		} else {
 			return false;
 		}
@@ -48,10 +48,10 @@ const Details = ({ car, img }: { car: Car; img: string }) => {
 	const setFavorite = () => {
 		if (isFavorite) {
 			setIsFavorite(false);
-			localStorage.removeItem('favoriteCar');
+			localStorage.removeItem('favoriteVehicle');
 		} else {
 			setIsFavorite(true);
-			localStorage.setItem('favoriteCar', JSON.stringify(car.id));
+			localStorage.setItem('favoriteVehicle', JSON.stringify(vehicle.id));
 		}
 	};
 
@@ -61,11 +61,13 @@ const Details = ({ car, img }: { car: Car; img: string }) => {
 				<div className='flex flex-col gap-0.5'>
 					<Row>
 						<h1 className='text-xl font-bold text-cinder-950 dark:text-cinder-50'>
-							{car.make} {car.model}
+							{vehicle.make} {vehicle.model}
 						</h1>
 						<FavouriteButton onClick={setFavorite} isFavorite={isFavorite} />
 					</Row>
-					<span className='font-medium text-cinder-300 mb-0'>{car.year}</span>
+					<span className='font-medium text-cinder-300 mb-0'>
+						{vehicle.year}
+					</span>
 				</div>
 
 				<div className='flex flex-col rounded-lg gap-4'>
@@ -75,7 +77,7 @@ const Details = ({ car, img }: { car: Car; img: string }) => {
 							Kilometers
 						</span>
 						<span className='dark:text-cinder-100'>
-							{formatKm(car.kilometers)} km
+							{formatKm(vehicle.kilometers)} km
 						</span>
 					</span>
 					<Row>
@@ -83,7 +85,7 @@ const Details = ({ car, img }: { car: Car; img: string }) => {
 							<ClipboardIcon className='text-xl' />
 							Service records
 						</span>
-						<span className='dark:text-cinder-100'>{car.record_count}</span>
+						<span className='dark:text-cinder-100'>{vehicle.record_count}</span>
 					</Row>
 					<Row>
 						<span className='flex items-center gap-2 dark:text-cinder-300'>
@@ -91,7 +93,7 @@ const Details = ({ car, img }: { car: Car; img: string }) => {
 							Total expenses
 						</span>
 						<span className='dark:text-cinder-100'>
-							{`${car.service_costs} €`}
+							{`${vehicle.service_costs} €`}
 						</span>
 					</Row>
 				</div>

@@ -1,32 +1,32 @@
 import { createContext, useState, Dispatch, SetStateAction } from 'react';
 
 type ContextType = {
-	carId: number | undefined;
-	setCarIdState: Dispatch<SetStateAction<number | undefined>>;
-	setCarId: (id: number | undefined) => void;
+	vehicleId: number | undefined;
+	setVehicleIdState: Dispatch<SetStateAction<number | undefined>>;
+	setVehicleId: (id: number | undefined) => void;
 };
 
 export const AppContext = createContext<ContextType>({
-	carId: undefined,
-	setCarIdState: () => {},
-	setCarId: () => {},
+	vehicleId: undefined,
+	setVehicleIdState: () => {},
+	setVehicleId: () => {},
 });
 
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
-	const [carId, setCarIdState] = useState<number | undefined>(() => {
-		const localData = localStorage.getItem('carId');
+	const [vehicleId, setVehicleIdState] = useState<number | undefined>(() => {
+		const localData = localStorage.getItem('vehicleId');
 		return localData ? Number(JSON.parse(localData)) : undefined;
 	});
-	const setCarId = (id: number | undefined) => {
-		setCarIdState(id);
+	const setVehicleId = (id: number | undefined) => {
+		setVehicleIdState(id);
 		if (id !== undefined) {
-			localStorage.setItem('carId', JSON.stringify(id));
+			localStorage.setItem('vehicleId', JSON.stringify(id));
 		}
 	};
 	const value = {
-		carId,
-		setCarIdState,
-		setCarId,
+		vehicleId,
+		setVehicleIdState,
+		setVehicleId,
 	};
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

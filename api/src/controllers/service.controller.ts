@@ -10,9 +10,9 @@ export const getRecords = async (
 ) => {
 	const uid = req.uid;
 
-	if (req.query.car) {
-		const carId = Number(req.query.car);
-		const result = await db.getRecordsByCar(uid, carId);
+	if (req.query.vehicle) {
+		const vehicleId = Number(req.query.vehicle);
+		const result = await db.getRecordsByVehicle(uid, vehicleId);
 		res.status(200).json(result);
 	} else {
 		const result = await db.getRecords(uid);
@@ -22,16 +22,16 @@ export const getRecords = async (
 
 export const getRecordById = async (req: Request, res: Response) => {
 	const uid = req.uid;
-	const carId = Number(req.params.id);
-	const result = await db.getRecordById(uid, carId);
+	const vehicleId = Number(req.params.id);
+	const result = await db.getRecordById(uid, vehicleId);
 	res.status(200).json(result);
 };
 
 export const createRecord = async (req: Request, res: Response) => {
 	const uid = req.uid;
-	const { car_id, description, notes, date, kilometers, cost } = req.body;
+	const { vehicle_id, description, notes, date, kilometers, cost } = req.body;
 	const newRecord: NewServiceRecord = {
-		car_id: car_id,
+		vehicle_id: vehicle_id,
 		description: description,
 		notes: notes,
 		date: date,

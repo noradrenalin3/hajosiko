@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const newCarSchema = z.object({
+export const newVehicleSchema = z.object({
 	body: z.object({
 		make: z.string().min(1).max(48),
 		model: z.string().min(1).max(48),
@@ -12,4 +12,4 @@ export const newCarSchema = z.object({
 	}),
 });
 
-export const carUpdateSchema = newCarSchema;
+export const vehicleUpdateSchema = newVehicleSchema;

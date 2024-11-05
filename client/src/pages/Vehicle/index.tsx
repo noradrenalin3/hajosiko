@@ -1,39 +1,40 @@
 import Details from './Details';
 import EditForm from './EditForm';
-import { useCarById } from '~/hooks/useQuery';
+import { useVehicleById } from '~/hooks/useQuery';
 import { useContext, useState } from 'react';
 import { AppContext } from '~/context/AppContext';
 import useStorage from '~/hooks/useStorage';
 import invariant from '~/utils/invariant';
 import { toast } from 'react-toastify';
 
-const CarPage = () => {
-	const { carId } = useContext(AppContext);
-	invariant(carId);
+const VehiclePage = () => {
+	const { vehicleId } = useContext(AppContext);
+	invariant(vehicleId);
 
-	const { data: car, isLoading, isError } = useCarById(carId);
+	const { data: vehicle, isLoading, isError } = useVehicleById(vehicleId);
 
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleModal = () => setIsOpen(!isOpen);
 
 	const [imgSrc, setImgSrc] = useState('');
+	const { getUrl, updateMeta } = useStorage(vehicleId);
 
-	const { getUrl } = useStorage(carId);
 	getUrl().then((url) => {
+		console.log(url);
 		if (url) {
 			setImgSrc(url);
 		} else {
-			setImgSrc('/images/car.jpg');
+			//setImgSrc('/images/vehicle.jpg');
 		}
 	});
 
 	if (isError) {
-		toast.error('Error loading car');
+		toast.error('Error loading vehicle');
 	}
 	if (isLoading) {
 		return <div>Loading...</div>;
 	}
-	if (!car || isError) {
+	if (!vehicle || isError) {
 		return <div>No data</div>;
 	}
 
@@ -45,10 +46,16 @@ const CarPage = () => {
 	};
 	return (
 		<>
-			<Details car={car} img={imgSrc} />
-			<EditForm isOpen={isOpen} closeHandler={toggleModal} car={car} />
+			<img
+				src={imgSrc || '/images/vehicle.jpg'}
+				alt={'/images/vehicle.jpg'}
+				className='w-full rounded-t-lg aspect-video bg-cinder-300'
+			/>
+			<button onClick={updateMeta}>Update metadata</button>
+			<Details vehicle={vehicle} img={imgSrc} />
+			<EditForm isOpen={isOpen} closeHandler={toggleModal} vehicle={vehicle} />
 		</>
 	);
 };
 
-export default CarPage;
+export default VehiclePage;

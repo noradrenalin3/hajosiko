@@ -1,27 +1,37 @@
 import { useContext } from 'react';
 import formatKm from '~/utils/formatKm';
 
-import { Car } from '~/types/car.types';
+import { Vehicle } from '@shared/types';
 import { Link } from 'react-router-dom';
-import { useCars } from '~/hooks/useQuery';
+import { useVehicles } from '~/hooks/useQuery';
 import Spinner from '~/components/Spinner';
 import { AppContext } from '~/context/AppContext';
+import {
+	PiMotorcycleLight as MotorcycleIcon,
+	PiCarProfileLight as CarIcon,
+} from 'react-icons/pi';
+import { PiCaretRightBold as RightIcon } from 'react-icons/pi';
 
-const CarCard = ({
-	car,
-	selectCar,
+const VehicleVehicled = ({
+	vehicle,
+	selectVehicle,
 }: {
-	car: Car;
-	selectCar: (id: number) => void;
+	vehicle: Vehicle;
+	selectVehicle: (id: number) => void;
 }) => {
-	const { id, make, model, year, kilometers } = car;
+	const { id, make, model, year, kilometers } = vehicle;
 	return (
 		<Link
-			onClick={() => selectCar(id)}
-			to={'/car'}
-			className='flex flex-col rounded-lg bg-cinder-50 dark:bg-cinder-975'
+			onClick={() => selectVehicle(id)}
+			to={'/vehicle'}
+			className='flex items-center py-3 px-6 gap-4 bg-cinder-975 border-cinder-950'
 		>
-			<div className='flex flex-col p-4'>
+			{Math.random() < 0.5 ? (
+				<CarIcon className='text-5xl text-violet-600' />
+			) : (
+				<MotorcycleIcon className='text-5xl text-violet-600' />
+			)}
+			<div className='flex flex-col'>
 				<h3 className='text-lg font-medium'>
 					{make} {model}
 				</h3>
@@ -32,18 +42,18 @@ const CarCard = ({
 					{formatKm(kilometers)} km
 				</span>
 			</div>
-			<div className=''></div>
+			<RightIcon className='ml-auto text-2xl text-cinder-500' />
 		</Link>
 	);
 };
 
 const Garage = () => {
-	const { setCarId } = useContext(AppContext);
+	const { setVehicleId } = useContext(AppContext);
 
-	const selectCar = (newId: number) => {
-		setCarId(newId);
+	const selectVehicle = (newId: number) => {
+		setVehicleId(newId);
 	};
-	const { data: cars, isLoading, error } = useCars();
+	const { data: vehicles, isLoading, error } = useVehicles();
 
 	if (error) {
 		return <div>{error?.message || 'error'}</div>;
@@ -54,13 +64,17 @@ const Garage = () => {
 
 	return (
 		<>
-			<div className='grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4'>
-				{cars ? (
-					cars.map((car) => (
-						<CarCard key={car.id} car={car} selectCar={selectCar} />
+			<div className='grid grid-cols-1 sm:grid-cols-2 sm:gap-4 bg-cinder-950 gap-px rounded-lg overflow-hidden'>
+				{vehicles ? (
+					vehicles.map((vehicle) => (
+						<VehicleVehicled
+							key={vehicle.id}
+							vehicle={vehicle}
+							selectVehicle={selectVehicle}
+						/>
 					))
 				) : (
-					<div>No cars. Add car...</div>
+					<div>No vehicles. Add vehicle...</div>
 				)}
 			</div>
 		</>

@@ -8,7 +8,7 @@ async function createTables() {
 		.addColumn('email', 'text', (cb) => cb.notNull())
 		.execute();
 	await db.schema
-		.createTable('cars')
+		.createTable('vehicles')
 		.ifNotExists()
 		.addColumn('id', 'integer', (cb) =>
 			cb.primaryKey().generatedAlwaysAsIdentity(),
@@ -27,8 +27,8 @@ async function createTables() {
 		.addColumn('id', 'integer', (cb) =>
 			cb.primaryKey().generatedAlwaysAsIdentity(),
 		)
-		.addColumn('car_id', 'integer', (cb) =>
-			cb.notNull().references('cars.id').onDelete('cascade'),
+		.addColumn('vehicle_id', 'integer', (cb) =>
+			cb.notNull().references('vehicles.id').onDelete('cascade'),
 		)
 		.addColumn('description', 'text')
 		.addColumn('notes', 'text')

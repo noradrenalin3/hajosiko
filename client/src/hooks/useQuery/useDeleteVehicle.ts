@@ -1,25 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteCar } from '~/api/queries';
+import { deleteVehicle } from '~/api/queries';
 import { useContext } from 'react';
 import queryKeys from '~/constants/queryKeys';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '~/context/AppContext';
-import useAuth from '../useAuth';
+import useAuth from '~/hooks/useAuth';
 import { toast } from 'react-toastify';
 
-const useDeleteCar = (id: number) => {
+const useDeleteVehicle = (id: number) => {
 	const { currentUser } = useAuth();
-	const { setCarId } = useContext(AppContext);
+	const { setVehicleId } = useContext(AppContext);
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: async () => (currentUser ? deleteCar(currentUser, id) : null),
+		mutationFn: async () =>
+			currentUser ? deleteVehicle(currentUser, id) : null,
 		onSuccess: () => {
 			navigate('/garage');
-			setCarId(undefined);
-			queryClient.invalidateQueries({ queryKey: [queryKeys.cars] });
+			setVehicleId(undefined);
+			queryClient.invalidateQueries({ queryKey: [queryKeys.vehicles] });
 		},
 		onError: (err) => toast.error(err.message),
 	});
 };
-export default useDeleteCar;
+export default useDeleteVehicle;

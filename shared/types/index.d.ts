@@ -1,4 +1,4 @@
-export type Car = {
+export type Vehicle = {
 	owner_id: string;
 	id: number;
 	make: string;
@@ -8,17 +8,17 @@ export type Car = {
 	record_count: number;
 	service_costs: number;
 };
-export type NewCar = Omit<
-	Car,
+export type NewVehicle = Omit<
+	Vehicle,
 	'owner_id' | 'id' | 'record_count' | 'service_costs'
 >;
-export type CarUpdate = Omit<
-	Car,
+export type VehicleUpdate = Omit<
+	Vehicle,
 	'owner_id' | 'id' | 'record_count' | 'service_costs'
 >;
 
 export type ServiceRecord = {
-	car_id: number;
+	vehicle_id: number;
 	id: number;
 	description: string;
 	notes?: string;
@@ -27,4 +27,6 @@ export type ServiceRecord = {
 	cost: number;
 };
 export type NewServiceRecord = Omit<ServiceRecord, 'id'>;
-export type ServiceRecordUpdate = Omit<NewServiceRecord, 'car_id'>;
+export type ServiceRecordUpdate = Omit<NewServiceRecord, 'vehicle_id'>;
+
+export type TypeOfVehicle = 'car' | 'motorcycle' | 'scooter';
