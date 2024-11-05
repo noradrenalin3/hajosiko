@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { NewCar, CarUpdate, CarStats } from '#db/db.types';
+import { NewCar, CarUpdate } from '#db/db.types';
+import { Car as CarStats } from '@shared/types';
 import * as db from '#repositories/car.repository';
 import { deleteImage } from '#controllers/image.controller';
 

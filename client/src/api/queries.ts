@@ -1,5 +1,11 @@
-import { Car, CarUpdate, NewCar } from '~/types/car.types';
-import { ServiceRecord, NewServiceRecord } from '~/types/record.types';
+import type {
+	Car,
+	CarUpdate,
+	NewCar,
+	ServiceRecord,
+	NewServiceRecord,
+	ServiceRecordUpdate,
+} from '@shared/types';
 import { User } from 'firebase/auth';
 
 const baseUrl = 'http://localhost:3000/api';
@@ -160,7 +166,6 @@ export async function createServiceRecord(
 	user: User,
 	record: NewServiceRecord,
 ): Promise<ServiceRecord> {
-	console.log(record);
 	const token = await user.getIdToken();
 	const url = `${baseUrl}/records`;
 

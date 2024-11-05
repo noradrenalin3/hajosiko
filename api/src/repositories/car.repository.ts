@@ -1,17 +1,12 @@
 import { db } from '#db/db.pool';
-import { Car, CarStats, CarUpdate, NewCar } from '#db/db.types';
+import { Car, CarUpdate, NewCar } from '#db/db.types';
 import { DeleteResult, sql } from 'kysely';
+import { Car as CarStats } from '@shared/types';
 
 export async function getCars(uid: string): Promise<CarStats[]> {
 	return await db
 		.selectFrom('cars')
-		.select([
-			'cars.id',
-			'cars.make',
-			'cars.model',
-			'cars.year',
-			'cars.kilometers',
-		])
+		.selectAll('cars')
 		.where('owner_id', '=', uid)
 		.leftJoin('service_records', 'service_records.car_id', 'cars.id')
 		.select((eb) => [

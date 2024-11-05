@@ -1,8 +1,6 @@
 {
 	"imports": {
-		"#*": "./dist/*.js",
-		"#tests": "./dist/tests",
-		"#json/*": "./json/*"
+		"#*": "./dist/*.js"
 	},
 	"type": "module",
 	"scripts": {
@@ -10,6 +8,7 @@
 		"format": "npx prettier --write ."
 	},
 	"devDependencies": {
+		"@shared/types": "../shared/types",
 		"@types/cors": "^2.8.17",
 		"@types/express": "^4.17.21",
 		"@types/pg": "^8.11.10",
