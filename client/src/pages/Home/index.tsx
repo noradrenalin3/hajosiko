@@ -1,14 +1,13 @@
-import { useContext } from 'react';
-import { AuthContext } from '~/context/AuthContext';
 import { Link } from 'react-router-dom';
+import useAuth from '~/hooks/useAuth';
 
 const Home = () => {
-	const { currentUser } = useContext(AuthContext);
+	const { isAuthenticated } = useAuth();
 
 	return (
 		<>
 			<div className=''>
-				{!currentUser ? (
+				{!isAuthenticated ? (
 					<div className='flex gap-4'>
 						<Link
 							to='/signup'

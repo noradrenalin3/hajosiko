@@ -4,16 +4,16 @@ import { useContext } from 'react';
 import { AuthContext } from '~/context/AuthContext';
 import queryKeys from '~/constants/queryKeys';
 
-const useServiceRecords = (carId: number | undefined) => {
+const useServiceRecords = (vehicleId: number | undefined) => {
 	const { currentUser } = useContext(AuthContext);
 
 	const query = useQuery({
-		queryKey: [queryKeys.records, carId],
+		queryKey: [queryKeys.records, vehicleId],
 		enabled: currentUser !== null,
 		queryFn: async () => {
 			if (!currentUser) return;
-			if (carId) {
-				return getServiceRecords(currentUser, carId);
+			if (vehicleId) {
+				return getServiceRecords(currentUser, vehicleId);
 			} else {
 				return getServiceRecords(currentUser);
 			}
