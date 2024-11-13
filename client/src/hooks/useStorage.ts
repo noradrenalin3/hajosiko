@@ -26,9 +26,6 @@ const useStorage = (vehicleId: number) => {
 			}
 			throw new Error(err.message);
 		});
-		getMetadata(imageRef)
-			.then((res) => console.log(res))
-			.catch((err) => console.error(err));
 		return url;
 	};
 	const updateMeta = async () => {

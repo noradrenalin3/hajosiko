@@ -12,7 +12,7 @@ import {
 } from 'react-icons/pi';
 import { PiCaretRightBold as RightIcon } from 'react-icons/pi';
 
-const VehicleVehicled = ({
+const VehicleCard = ({
 	vehicle,
 	selectVehicle,
 }: {
@@ -27,9 +27,9 @@ const VehicleVehicled = ({
 			className='flex items-center py-3 px-6 gap-4 bg-cinder-975 border-cinder-950'
 		>
 			{Math.random() < 0.5 ? (
-				<CarIcon className='text-5xl text-violet-600' />
+				<CarIcon className='text-4xl sm:text-5xl text-violet-600' />
 			) : (
-				<MotorcycleIcon className='text-5xl text-violet-600' />
+				<MotorcycleIcon className='text-4xl sm:text-5xl text-violet-600' />
 			)}
 			<div className='flex flex-col'>
 				<h3 className='text-lg font-medium'>
@@ -67,7 +67,7 @@ const Garage = () => {
 			<div className='grid grid-cols-1 sm:grid-cols-2 sm:gap-4 bg-cinder-950 gap-px rounded-lg overflow-hidden'>
 				{vehicles ? (
 					vehicles.map((vehicle) => (
-						<VehicleVehicled
+						<VehicleCard
 							key={vehicle.id}
 							vehicle={vehicle}
 							selectVehicle={selectVehicle}

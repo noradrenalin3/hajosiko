@@ -1,10 +1,8 @@
-import { HTMLInputTypeAttribute, useContext, useRef, useState } from 'react';
+import { HTMLInputTypeAttribute } from 'react';
 import Form, { FormButtons } from '~/components/Form';
-import { Vehicle, VehicleUpdate, NewVehicle } from '@shared/types';
+import { Vehicle, VehicleUpdate } from '@shared/types';
 import { PiTrash as TrashIcon } from 'react-icons/pi';
 import { useDeleteVehicle, useUpdateVehicle } from '~/hooks/useQuery';
-import useStorage from '~/hooks/useStorage';
-import ImageUpload from '~/components/ImageUpload';
 import Overlay from '~/components/Overlay';
 
 type FormDefs = {
@@ -27,7 +25,6 @@ const EditForm = ({
 	isOpen: boolean;
 	closeHandler: () => void;
 }) => {
-	const imageRef = useRef<Blob | null>(null);
 	const {
 		mutate: updateVehicle,
 		isPending,
@@ -49,10 +46,6 @@ const EditForm = ({
 			year: Number(form.year.value),
 			kilometers: Number(form.kilometers.value),
 		};
-
-		if (imageRef.current) {
-			uploadImage(imageRef.current);
-		}
 		updateVehicle(updated);
 	};
 	const fields: FormDefs[] = [
@@ -94,13 +87,10 @@ const EditForm = ({
 			closeHandler();
 		}
 	};
-	const { uploadImage } = useStorage(vehicle.id);
 
 	return (
 		<Overlay isOpen={isOpen} close={closeHandler}>
 			<Form onSubmit={handleSubmit} fields={fields} title='Edit vehicle'>
-				<label className='font-semibold'>Upload image</label>
-				<ImageUpload imageRef={imageRef} />
 				<FormButtons cancelHandler={closeHandler} submitLabel='Save'>
 					<button
 						type='button'

@@ -2,8 +2,8 @@ import { Vehicle } from '@shared/types';
 import formatKm from '~/utils/formatKm';
 import {
 	PiGauge as GaugeIcon,
-	PiClipboardText as ClipboardIcon,
-	PiMoney as MoneyIcon,
+	PiClipboardTextFill as ClipboardIcon,
+	PiMoneyFill as MoneyIcon,
 	PiStarBold as StarIcon,
 	PiStarFill as StarFillIcon,
 } from 'react-icons/pi';
@@ -29,14 +29,14 @@ const FavouriteButton = ({
 		onClick={onClick}
 		className={clsx(
 			'text-xl',
-			isFavorite ? 'text-blue-500' : 'text-cinder-300',
+			isFavorite ? 'text-violet-500' : 'text-cinder-300',
 		)}
 	>
 		{isFavorite ? <StarFillIcon /> : <StarIcon />}
 	</button>
 );
 
-const Details = ({ vehicle, img }: { vehicle: Vehicle; img: string }) => {
+const Details = ({ vehicle }: { vehicle: Vehicle }) => {
 	const [isFavorite, setIsFavorite] = useState<boolean>(() => {
 		const localData = localStorage.getItem('favoriteVehicle');
 		if (localData) {
@@ -56,46 +56,51 @@ const Details = ({ vehicle, img }: { vehicle: Vehicle; img: string }) => {
 	};
 
 	return (
-		<div className='rounded-lg flex flex-col'>
-			<div className='flex flex-col bg-cinder-50 dark:bg-cinder-975 rounded-b-lg p-4 gap-4'>
-				<div className='flex flex-col gap-0.5'>
-					<Row>
-						<h1 className='text-xl font-bold text-cinder-950 dark:text-cinder-50'>
+		<div className='flex flex-col gap-2'>
+			<div className='flex flex-col border border-cinder-200 dark:border-none dark:bg-cinder-975 rounded-lg gap-4 p-4 sm:p-6'>
+				<div className='flex justify-between'>
+					<div className='flex flex-col gap-0.5 justify-center'>
+						<h1 className='text-2xl font-bold text-cinder-950 dark:text-cinder-50'>
 							{vehicle.make} {vehicle.model}
 						</h1>
-						<FavouriteButton onClick={setFavorite} isFavorite={isFavorite} />
-					</Row>
-					<span className='font-medium text-cinder-300 mb-0'>
-						{vehicle.year}
-					</span>
-				</div>
-
-				<div className='flex flex-col rounded-lg gap-4'>
-					<span className='font-medium text-cinder-300 flex justify-between'>
-						<span className='flex items-center gap-2'>
-							<GaugeIcon className='text-xl' />
-							Kilometers
+						<span className='font-medium text-cinder-300 mb-0'>
+							{vehicle.year}
 						</span>
+					</div>
+				</div>
+				<div className='flex flex-col rounded-lg gap-4'>
+					<span className='font-medium text-cinder-200 flex justify-between'>
+						<span className='flex items-center gap-2'>Odometer</span>
 						<span className='dark:text-cinder-100'>
 							{formatKm(vehicle.kilometers)} km
 						</span>
 					</span>
 					<Row>
-						<span className='flex items-center gap-2 dark:text-cinder-300'>
-							<ClipboardIcon className='text-xl' />
-							Service records
-						</span>
-						<span className='dark:text-cinder-100'>{vehicle.record_count}</span>
+						<span className='dark:text-cinder-200'>License plate</span>
+						--
 					</Row>
 					<Row>
-						<span className='flex items-center gap-2 dark:text-cinder-300'>
-							<MoneyIcon className='text-xl' />
-							Total expenses
-						</span>
-						<span className='dark:text-cinder-100'>
-							{`${vehicle.service_costs} €`}
-						</span>
+						<span className='dark:text-cinder-200'>Fuel type</span>
+						--
 					</Row>
+				</div>
+			</div>
+			<div className='flex gap-2'>
+				<div className='w-1/2 flex flex-col dark:bg-cinder-975 dark:text-cinder-50 rounded-lg p-4 sm:p-6 border border-cinder-200 dark:border-none'>
+					<span className='flex items-center gap-2 text-cinder-600 dark:text-cinder-300 font-medium'>
+						<ClipboardIcon className='size-5 hidden' />
+						Service records
+					</span>
+					<span className='text-2xl font-semibold'>{vehicle.record_count}</span>
+				</div>
+				<div className='w-1/2 flex flex-col dark:bg-cinder-975 dark:text-cinder-50 rounded-lg p-4 sm:p-6 border border-cinder-200 dark:border-none'>
+					<span className='flex items-center gap-2 text-cinder-600 dark:text-cinder-300 font-medium'>
+						<MoneyIcon className='size-5 hidden' />
+						Total expenses
+					</span>
+					<span className='text-2xl font-semibold'>
+						{`${vehicle.service_costs} €`}
+					</span>
 				</div>
 			</div>
 		</div>

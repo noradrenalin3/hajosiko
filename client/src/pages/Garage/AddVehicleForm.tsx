@@ -1,14 +1,8 @@
-import { useRef, useState } from 'react';
 import Form, { FormButtons } from '~/components/Form';
-import { Vehicle, NewVehicle } from '@shared/types';
+import { NewVehicle } from '@shared/types';
 import { useCreateVehicle } from '~/hooks/useQuery';
-import ImageUpload from '~/components/ImageUpload';
 import Overlay from '~/components/Overlay';
 import { FormDefs } from '~/types/form.types';
-import useUploadImage from '~/hooks/useUploadImage';
-import { toast } from 'react-toastify';
-import { PiXBold as XIcon } from 'react-icons/pi';
-import Preview from '~/components/ImageUpload/Preview';
 
 const fields: FormDefs[] = [
 	{
@@ -47,32 +41,15 @@ const AddVehicleForm = ({
 	isOpen: boolean;
 	closeHandler: () => void;
 }) => {
-	const [pending, setPending] = useState(false);
-	const imageRef = useRef<Blob | null>(null);
-	const afterUpload = () => {
-		setPending(false);
-		toast.success('Success');
-		closeHandler();
-	};
-	const { uploadImage } = useUploadImage(afterUpload);
-
-	const onSuccess = (vehicle: Vehicle) => {
-		if (!imageRef.current) {
-			return closeHandler();
-		}
-		uploadImage(imageRef.current, vehicle.id);
-	};
-
 	const {
 		mutate: createVehicle,
 		isPending,
 		isSuccess,
 		isError,
-	} = useCreateVehicle(onSuccess);
+	} = useCreateVehicle(closeHandler);
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setPending(true);
 		const form = e.currentTarget;
 		const newVehicle: NewVehicle = {
 			make: form.make.value,
@@ -85,18 +62,12 @@ const AddVehicleForm = ({
 
 	return (
 		<Overlay isOpen={isOpen} close={closeHandler}>
-			{pending ? (
-				<div>Pending...</div>
-			) : (
-				<Form onSubmit={handleSubmit} fields={fields} title='Create vehicle'>
-					<label className='font-semibold'>Image</label>
-					<ImageUpload imageRef={imageRef} />
-					<FormButtons
-						cancelHandler={closeHandler}
-						submitLabel='Add'
-					></FormButtons>
-				</Form>
-			)}
+			<Form onSubmit={handleSubmit} fields={fields} title='Create vehicle'>
+				<FormButtons
+					cancelHandler={closeHandler}
+					submitLabel='Add'
+				></FormButtons>
+			</Form>
 		</Overlay>
 	);
 };
