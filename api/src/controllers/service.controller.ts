@@ -13,19 +13,12 @@ export const getRecords = async (
 	const uid = req.uid;
 	const q = req.query;
 
-	if (!q.vehicle && !q.summary) {
-		const result = await db.getRecords(uid);
-		return res.status(200).json(result);
-	}
-
-	const vehicleId = Number(req.query.vehicle);
-
-	if (q.vehicle && !q.summary) {
+	if (q.vehicle) {
+		const vehicleId = Number(q.vehicle);
 		const result = await db.getRecordsByVehicle(uid, vehicleId);
 		return res.status(200).json(result);
 	}
-
-	const result = await db.get12MonthsRecords(uid, vehicleId);
+	const result = await db.getRecords(uid);
 	return res.status(200).json(result);
 };
 
