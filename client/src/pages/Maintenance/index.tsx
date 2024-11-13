@@ -41,11 +41,10 @@ const Maintenance = () => {
 		<div className='flex flex-col gap-4'>
 			<div className='flex flex-col gap-4'>
 				<Status />
-				<div className='flex items-center gap-2 py-2 text-cinder-800 dark:text-cinder-100'>
-					<h2 className='text-xl font-bold flex items-center gap-1 py-0.5'>
-						Maintenance Records
-					</h2>
-				</div>
+				<div className='flex items-center gap-2 py-2 text-cinder-800 dark:text-cinder-100'></div>
+				<h2 className='text-lg font-medium flex items-center gap-1'>
+					Maintenance Records
+				</h2>
 				{recordsFetching ? <Spinner /> : null}
 				{!service_records ? (
 					<div>No records</div>

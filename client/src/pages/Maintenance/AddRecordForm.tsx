@@ -5,6 +5,7 @@ import { AppContext } from '~/context/AppContext';
 import { useContext, useState } from 'react';
 import { useCreateServiceRecord } from '~/hooks/useQuery';
 import Modal from '~/components/Modal';
+import Overlay from '~/components/Overlay';
 const fields: FormDefs[] = [
 	{
 		type: 'text',
@@ -79,11 +80,11 @@ const AddRecordForm = ({
 	}
 
 	return (
-		<Modal isOpen={isOpen} close={close}>
+		<Overlay isOpen={isOpen} close={close}>
 			<Form title='New Record' onSubmit={submit} fields={fields}>
 				<FormButtons cancelHandler={close} submitLabel='Add record' />
 			</Form>
-		</Modal>
+		</Overlay>
 	);
 };
 

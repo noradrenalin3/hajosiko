@@ -12,6 +12,7 @@ import { PiGarageFill as GarageIcon } from 'react-icons/pi';
 import { AppContext } from '~/context/AppContext';
 import { useVehicles } from '~/hooks/useQuery';
 import { Link } from 'react-router-dom';
+import truncate from '~/utils/truncate';
 
 const VehicleButton = ({
 	isActive,
@@ -40,13 +41,13 @@ const VehicleButton = ({
 
 const VehicleSelect = () => {
 	const { vehicleId, setVehicleId } = useContext(AppContext);
-	const { data: vehicles, isLoading, isError } = useVehicles();
+	const { data: vehicles, isLoading, isError, error } = useVehicles();
 
 	if (isLoading) {
 		return <div>--</div>;
 	}
 	if (isError) {
-		return <div>Error</div>;
+		return <div>{error.message}</div>;
 	}
 	if (!vehicles) {
 		return <div>No data</div>;
@@ -56,26 +57,25 @@ const VehicleSelect = () => {
 
 	const vehicle = vehicles.find((c) => c.id === vehicleId);
 
+	const label = truncate(`${vehicle?.make} ${vehicle?.model}`, 22);
 	return (
 		<div className=''>
 			<Menu>
 				<MenuButton
 					className={`
-						w-full dark:bg-cinder-950
-						flex items-center py-2 px-3 gap-10 rounded-lg
+						w-full dark:bg-transparent
+						flex items-center py-1.5 px-2 gap-8 rounded-lg
 						hover:bg-cinder-300 dark:hover:bg-cinder-950 data-[active]:bg-cinder-300
 						dark:data-[active]:bg-cinder-900
-						text-cinder-50 font-bold
+						text-cinder-950 dark:text-cinder-50 font-bold
 					`}
 				>
-					<span className='w-full flex items-center font-medium'>
-						{!vehicle || !vehicleId
-							? 'All Vehicles'
-							: vehicle.make + ' ' + vehicle.model}
+					<span className='w-full font-bold text-lg'>
+						{!vehicle || !vehicleId ? 'All Vehicles' : label}
 					</span>
 					<span className='relative flex items-center'>
 						<ChevronDownIcon
-							className='absolute right-0 pointer-events-none text-xl text-cinder-600 dark:text-cinder-300'
+							className='absolute right-0 pointer-events-none text-xl'
 							aria-hidden='true'
 						/>
 					</span>

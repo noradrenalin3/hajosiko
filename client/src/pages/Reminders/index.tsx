@@ -52,7 +52,27 @@ const reminderDefs: ReminderData[] = [
 		interval: 12,
 		icon: <ToolsIcon className={iconClasses} />,
 	},
+	{
+		id: 6,
+		name: 'Tire rotation',
+		interval: 12,
+		icon: <TireIcon className={iconClasses} />,
+	},
 ];
+
+const Details = () => {
+	const [tracking, setTracking] = useState(false);
+	return (
+		<div className='flex flex-col rounded-lg bg-cinder-975'>
+			Oil filter
+			<Separator />
+			<div className='flex justify-between items-center p-4'>
+				<span className='font-medium text-cinder-200'>Track</span>
+				<Switch checked={tracking} onChange={setTracking} />
+			</div>
+		</div>
+	);
+};
 
 const Reminder = ({
 	data,
@@ -66,7 +86,7 @@ const Reminder = ({
 	const [enabled, setEnabled] = useState(false);
 	return (
 		<div className='flex flex-col px-0'>
-			<div className='flex items-center px-4 py-4 gap-4 font-medium rounded-lg'>
+			<div className='flex items-center px-4 py-4 gap-4 font-medium bg-cinder-975'>
 				<div className='grid grid-cols-auto grid-rows-2 gap-x-3'>
 					<span className='col-span-1 row-span-1'>
 						{data.icon ? data.icon : <WrenchIcon className={iconClasses} />}
@@ -107,7 +127,7 @@ const Reminders = () => {
 					{!editing ? 'Edit' : 'Done'}
 				</button>
 			</div>
-			<div className='flex flex-col dark:bg-cinder-975 rounded-lg'>
+			<div className='flex flex-col dark:bg-cinder-950 gap-px rounded-lg overflow-hidden'>
 				<div className='flex flex-col'>
 					{reminderDefs.map((r, i) => (
 						<Reminder

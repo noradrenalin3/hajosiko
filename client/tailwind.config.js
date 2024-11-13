@@ -5,12 +5,14 @@ export default {
 		extend: {
 			gridTemplateColumns: {
 				centered: '0.5fr 2fr 0.5fr',
+				28: 'repeat(30, minmax(0, 1fr))',
+				29: 'repeat(30, minmax(0, 1fr))',
+				30: 'repeat(30, minmax(0, 1fr))',
+				31: 'repeat(30, minmax(0, 1fr))',
 			},
 			boxShadow: {
 				main: 'rgba(0, 0, 0, 0.2) 0px 0px 5px 1px',
-				'border-dark': '0 0 0 1px #272729',
-				'border-light': '0 0 0 1px #aeafb2',
-				//custom: 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px',
+				'custom-sm': '0px 0px 7px -1px rgba(0, 0, 0, 0.15)',
 			},
 			zIndex: {
 				999: '999',
@@ -32,20 +34,6 @@ export default {
 					200: '#d1d1d1',
 					100: '#e7e7e7',
 					50: '#f6f6f6',
-				},
-				manatee: {
-					50: '#f5f6f8',
-					100: '#ecf1f3',
-					200: '#dce4e9',
-					300: '#c7d2da',
-					400: '#afbdca',
-					500: '#9aa8ba',
-					600: '#8d99ae',
-					700: '#717c91',
-					800: '#5d6776',
-					900: '#4e5561',
-					950: '#2e3238',
-					black: '#27272a',
 				},
 				violet: {
 					50: '#eff3fe',

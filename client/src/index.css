@@ -1,14 +1,18 @@
+@import '@fontsource-variable/inter';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
 	.light {
-		@apply bg-cinder-100;
-		@apply text-cinder-900;
+		@apply bg-cinder-50;
+		@apply text-cinder-950;
 		--range-circle-color: theme('colors.violet.500');
 		--range-line-color: theme('colors.cinder.800');
 		--range-circle-hover-color: theme('colors.violet.600');
+		--chart-text: theme('colors.cinder.900');
+		--chart-grid: theme('colors.cinder.200');
+		--chart-tooltip-bg: theme('colors.cinder.50');
 	}
 	.dark {
 		@apply bg-cinder-1000;
@@ -16,6 +20,10 @@
 		--range-circle-color: theme('colors.violet.500');
 		--range-line-color: theme('colors.cinder.400');
 		--range-circle-hover-color: theme('colors.violet.600');
+
+		--chart-text: theme('colors.cinder.100');
+		--chart-grid: theme('colors.cinder.900');
+		--chart-tooltip-bg: theme('colors.cinder.900');
 	}
 	:root {
 		--toastify-color-light: theme('colors.cinder.300');
@@ -24,11 +32,12 @@
 		--toastify-color-success: #4caf50;
 		--toastify-color-warning: #ff9800;
 		--toastify-color-error: #f44336;
+		--violet-400: theme('colors.violet.400');
 	}
 }
 
 :root {
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-family: 'Inter Variable', system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
 

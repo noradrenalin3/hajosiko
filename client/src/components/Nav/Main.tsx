@@ -11,9 +11,9 @@ export const MainNav = () => {
 	return (
 		<div
 			className={`
-			sticky bottom-0 w-full flex px-4 gap-2
-			bg-cinder-100 dark:bg-cinder-1000 text-cinder-100
-			border-t border-cinder-200 dark:border-cinder-950
+			sticky w-full flex px-4 gap-2
+			bg-cinder-50 dark:bg-cinder-1000 text-cinder-100
+			border-b border-cinder-200 dark:border-cinder-950
 		`}
 		>
 			<nav className='flex gap-4 grow justify-evenly'>

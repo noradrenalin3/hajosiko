@@ -1,4 +1,4 @@
-import { ServiceRecord } from '~/types/record.types';
+import { ServiceRecord } from '@shared/types';
 
 export default function sortRecords(records: ServiceRecord[]) {
 	const sorted = [...records].sort((a, b) => {

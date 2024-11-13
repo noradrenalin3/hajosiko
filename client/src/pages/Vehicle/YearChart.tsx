@@ -1,6 +1,4 @@
-import {
-	useYearSummary,
-} from '~/hooks/useQuery/useRecordsSummary';
+import { useYearSummary } from '~/hooks/useQuery/useRecordsSummary';
 import { MonthsRecords } from '@shared/types';
 import useMobile from '~/hooks/useMobile';
 import {
