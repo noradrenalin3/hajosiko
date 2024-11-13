@@ -1,10 +1,66 @@
-import { db } from '#db/db.pool';
+import { db, pgPool } from '#db/db.pool';
 import {
 	ServiceRecord,
 	ServiceRecordUpdate,
 	NewServiceRecord,
 } from '#db/db.types';
+import { DaysRecords, MonthsRecords } from '@shared/types';
 import { DeleteResult, sql } from 'kysely';
+
+export async function get1Month(
+	uid: string,
+	vehicleId: number,
+	year: number,
+	month: number,
+): Promise<DaysRecords[]> {
+	const startDate = `${year}-${month.toString().padStart(2, '0')}-01`;
+	const query = `
+		SELECT
+			to_char(days, 'YYYY-MM-DD') AS date,
+			count(sr.id) as events,
+			coalesce(sum(sr.cost), 0) AS expenses
+		FROM generate_series(
+			$1::DATE,
+			$1::DATE + interval '1 month' - interval '1 day',
+			'1 day'
+		) days
+		LEFT JOIN service_records sr
+			ON sr.date = days
+			AND sr.vehicle_id = $2
+		GROUP BY days
+		ORDER BY days;
+	`;
+	const result = await pgPool.query(query, [startDate, vehicleId]);
+	console.log(result.rows);
+	return result.rows;
+}
+
+export async function get12Months(
+	uid: string,
+	vehicleId: number,
+	year: number,
+): Promise<MonthsRecords[]> {
+	const startDate = `${year}-01-01`;
+	const query = `
+		SELECT
+			to_char(months, 'YYYY-MM') AS month,
+			count(sr.id),
+			coalesce(sum(sr.cost), 0) AS expenses
+		FROM generate_series(
+			$1::DATE,
+			$1::DATE + interval '11 month',
+			'1 month'
+		) months
+		LEFT JOIN service_records sr
+			ON to_char(sr.date, 'YYYY-MM') = to_char(months, 'YYYY-MM')
+			AND sr.vehicle_id = $2
+		GROUP BY months
+		ORDER BY months;
+	`;
+	const result = await pgPool.query(query, [startDate, vehicleId]);
+	console.log(result.rows);
+	return result.rows;
+}
 
 async function isVehicleOwner(
 	ownerId: string,

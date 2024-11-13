@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { NewVehicle, VehicleUpdate } from '#db/db.types';
 import { Vehicle as VehicleStats } from '@shared/types';
 import * as db from '#repositories/vehicle.repository';
-import { deleteImage } from '#controllers/image.controller';
+//import { deleteImage } from '#controllers/image.controller';
 
 export const getVehicles = async (
 	req: Request,
@@ -77,6 +77,6 @@ export const deleteVehicle = async (
 		return res.status(404).json(rows);
 	}
 
-	await deleteImage(uid, vehicleId).catch(next);
+	//await deleteImage(uid, vehicleId).catch(next);
 	return res.status(200).json(rows);
 };

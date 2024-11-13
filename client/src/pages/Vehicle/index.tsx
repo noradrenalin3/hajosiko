@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import { AppContext } from '~/context/AppContext';
 import invariant from '~/utils/invariant';
 import { toast } from 'react-toastify';
+import Expenses from './Expenses';
 
 const VehiclePage = () => {
 	const { vehicleId } = useContext(AppContext);
@@ -28,6 +29,7 @@ const VehiclePage = () => {
 		<div className='flex flex-col gap-2'>
 			<Details vehicle={vehicle} />
 			<EditForm isOpen={isOpen} closeHandler={toggleModal} vehicle={vehicle} />
+			<Expenses />
 		</div>
 	);
 };

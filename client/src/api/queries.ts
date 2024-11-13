@@ -5,6 +5,8 @@ import type {
 	ServiceRecord,
 	NewServiceRecord,
 	ServiceRecordUpdate,
+	MonthsRecords,
+	DaysRecords,
 } from '@shared/types';
 import { User } from 'firebase/auth';
 
@@ -140,9 +142,28 @@ export async function getServiceRecords(
 	} else {
 		console.log('vehicle-' + vehicleId, 'records:', records);
 	}
-	if (records.length < 2) {
-		return records;
+	return records;
+}
+export async function getRecordsSummary<T extends MonthsRecords | DaysRecords>(
+	user: User,
+	params: string,
+): Promise<T[]> {
+	const token = await user.getIdToken();
+	console.log(token);
+
+	const url = `${baseUrl}/records/summary?${params}`;
+	const response = await fetch(url, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+	});
+	if (!response.ok) {
+		throw new Error('Error fetching records');
 	}
+	const records: T[] = await response.json();
+	console.log(records);
 	return records;
 }
 

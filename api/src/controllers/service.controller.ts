@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { NewServiceRecord, ServiceRecordUpdate } from '#db/db.types';
 import * as db from '#repositories/service.repository';
 import { DeleteResult } from 'kysely';
+import { summaryQuerySchema } from '#schemas/querySchema';
+import { ZodError } from 'zod';
 
 export const getRecords = async (
 	req: Request,
@@ -9,14 +11,44 @@ export const getRecords = async (
 	next: NextFunction,
 ) => {
 	const uid = req.uid;
+	const q = req.query;
 
-	if (req.query.vehicle) {
-		const vehicleId = Number(req.query.vehicle);
-		const result = await db.getRecordsByVehicle(uid, vehicleId);
-		res.status(200).json(result);
-	} else {
+	if (!q.vehicle && !q.summary) {
 		const result = await db.getRecords(uid);
-		res.status(200).json(result);
+		return res.status(200).json(result);
+	}
+
+	const vehicleId = Number(req.query.vehicle);
+
+	if (q.vehicle && !q.summary) {
+		const result = await db.getRecordsByVehicle(uid, vehicleId);
+		return res.status(200).json(result);
+	}
+
+	const result = await db.get12MonthsRecords(uid, vehicleId);
+	return res.status(200).json(result);
+};
+
+export const getRecordsSummary = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const uid = req.uid;
+		const q = await summaryQuerySchema.parseAsync(req.query);
+		if (!q.month) {
+			const result = await db.get12Months(uid, q.vehicle, q.year);
+			return res.status(200).json(result);
+		}
+		const result = await db.get1Month(uid, q.vehicle, q.year, q.month);
+		return res.status(200).json(result);
+	} catch (err) {
+		let message = 'Query format error';
+		if (err instanceof ZodError) {
+			message = `Validation failed: ${err.issues.length} errors detected in query params`;
+		}
+		return next({ status: 400, message: message });
 	}
 };
 
