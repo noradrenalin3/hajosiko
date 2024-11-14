@@ -26,11 +26,16 @@ export async function get1Month(
 		) days
 		LEFT JOIN service_records sr
 			ON sr.date = days
-			AND sr.vehicle_id = $2
+			AND sr.vehicle_id = ANY (
+				SELECT id AS vehicle_id
+				FROM vehicles
+				WHERE vehicles.owner_id = $2
+				AND vehicles.id = $3
+			)
 		GROUP BY days
 		ORDER BY days;
 	`;
-	const result = await pgPool.query(query, [startDate, vehicleId]);
+	const result = await pgPool.query(query, [startDate, uid, vehicleId]);
 	console.log(result.rows);
 	return result.rows;
 }
@@ -53,11 +58,16 @@ export async function get12Months(
 		) months
 		LEFT JOIN service_records sr
 			ON to_char(sr.date, 'YYYY-MM') = to_char(months, 'YYYY-MM')
-			AND sr.vehicle_id = $2
+			AND sr.vehicle_id = ANY (
+				SELECT id AS vehicle_id
+				FROM vehicles
+				WHERE vehicles.owner_id = $2
+				AND vehicles.id = $3
+			)
 		GROUP BY months
 		ORDER BY months;
 	`;
-	const result = await pgPool.query(query, [startDate, vehicleId]);
+	const result = await pgPool.query(query, [startDate, uid, vehicleId]);
 	console.log(result.rows);
 	return result.rows;
 }
